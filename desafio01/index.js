@@ -6,6 +6,18 @@ const projects = []
 
 server.use(express.json())
 
+function checaProjetoExiste(req, res, next) {
+  const { id } = req.params
+
+  const existe = projects.find(project => project.id == id)
+
+  if (!existe) {
+    return res.status(400).json({ error: 'Projeto não existe.' })
+  }
+
+  return next()
+}
+
 server.get('/projects', (req, res) => {
   return res.json(projects)
 })
@@ -18,7 +30,7 @@ server.post('/projects', (req, res) => {
   return res.json(projects)
 })
 
-server.put('/projects/:id', (req, res) => {
+server.put('/projects/:id', checaProjetoExiste, (req, res) => {
   const { id } = req.params
   const { title } = req.body
 
@@ -27,7 +39,7 @@ server.put('/projects/:id', (req, res) => {
   return res.json(projects)
 })
 
-server.delete('/projects/:id', (req, res) => {
+server.delete('/projects/:id', checaProjetoExiste, (req, res) => {
   const { id } = req.params
 
   projects.splice(index(id), 1)
@@ -35,7 +47,7 @@ server.delete('/projects/:id', (req, res) => {
   return res.send()
 })
 
-server.post('/projects/:id/tasks', (req, res) => {
+server.post('/projects/:id/tasks', checaProjetoExiste, (req, res) => {
   const { id } = req.params
   const { title } = req.body
 
