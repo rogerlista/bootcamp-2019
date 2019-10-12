@@ -12,17 +12,44 @@ server.use(express.json())
 
 const users = ['Juca', 'Teobaldo', 'Tabajara']
 
+// middleware global
+server.use((req, res, next) => {
+  console.time('Tempo da requisição')
+  console.log(`Método: ${req.method} | URL: ${req.url}`)
+  next()
+  console.timeEnd('Tempo da requisição')
+})
+
+// middleware local
+function checaUsuarioExiste(req, res, next) {
+  if (!req.body.nome) {
+    return res.status(400).json({ error: 'Nome do usuário é obrigatório.' })
+  }
+
+  return next()
+}
+
+function checaUsuarioNoArray(req, res, next) {
+  const user = users[req.params.index]
+
+  if (!user) {
+    return res.status(400).json({ error: 'Usuário não existe.' })
+  }
+
+  req.user = user
+
+  return next()
+}
+
 server.get('/users', (req, res) => {
   return res.json(users)
 })
 
-server.get('/users/:index', (req, res) => {
-  const { index } = req.params
-
-  return res.json(users[index])
+server.get('/users/:index', checaUsuarioNoArray, (req, res) => {
+  return res.json(req.user)
 })
 
-server.post('/users', (req, res) => {
+server.post('/users', checaUsuarioExiste, (req, res) => {
   const { nome } = req.body
 
   users.push(nome)
@@ -30,16 +57,21 @@ server.post('/users', (req, res) => {
   return res.json(users)
 })
 
-server.put('/users/:index', (req, res) => {
-  const { index } = req.params
-  const { nome } = req.body
+server.put(
+  '/users/:index',
+  checaUsuarioNoArray,
+  checaUsuarioExiste,
+  (req, res) => {
+    const { index } = req.params
+    const { nome } = req.body
 
-  users[index] = nome
+    users[index] = nome
 
-  return res.json(users)
-})
+    return res.json(users)
+  }
+)
 
-server.delete('/users/:index', (req, res) => {
+server.delete('/users/:index', checaUsuarioNoArray, (req, res) => {
   const { index } = req.params
 
   users.splice(index, 1)
