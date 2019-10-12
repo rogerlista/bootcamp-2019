@@ -6,6 +6,8 @@ const server = express()
 // route params = /users/42
 // body params = { nome='Juca', email='juca@email.com' }
 
+const users = ['Juca', 'Teobaldo', 'Tabajara']
+
 server.get('/users', (req, res) => {
   // const nome = req.query.nome
   const { nome } = req.query // utilizando desestruturação
@@ -13,11 +15,11 @@ server.get('/users', (req, res) => {
   res.json({ message: `Hello World ${nome}` })
 })
 
-server.get('/users/:id', (req, res) => {
+server.get('/users/:index', (req, res) => {
   // const id = req.params.id
-  const { id } = req.params // utilizando desestruturação
+  const { index } = req.params // utilizando desestruturação
 
-  res.json({ message: `Buscando o usuário ${id}` })
+  res.json(users[index])
 })
 
 server.listen(3000)
