@@ -2,13 +2,13 @@ const express = require('express')
 
 const server = express()
 
-let requisicoes = 0
+let numeroDeRequisicoes = 0
 const projects = []
 
 server.use(express.json())
 
 server.use((req, res, next) => {
-  console.log(++requisicoes)
+  console.log(`Número de requisições: ${++numeroDeRequisicoes}`)
 
   return next()
 })
@@ -31,25 +31,28 @@ server.get('/projects', (req, res) => {
 
 server.post('/projects', (req, res) => {
   const { id, title } = req.body
+  const project = { id, title, tasks: [] }
 
-  projects.push({ id, title, tasks: [] })
+  projects.push(project)
 
-  return res.json(projects)
+  return res.json(project)
 })
 
 server.put('/projects/:id', checaProjetoExiste, (req, res) => {
   const { id } = req.params
   const { title } = req.body
+  const project = projects.find(project => project.id == id)
 
-  projects[index(id)].title = title
+  project.title = title
 
   return res.json(projects)
 })
 
 server.delete('/projects/:id', checaProjetoExiste, (req, res) => {
   const { id } = req.params
+  const projectIndex = projects.findIndex(project => project.id == 1)
 
-  projects.splice(index(id), 1)
+  projects.splice(projectIndex, 1)
 
   return res.send()
 })
@@ -57,14 +60,11 @@ server.delete('/projects/:id', checaProjetoExiste, (req, res) => {
 server.post('/projects/:id/tasks', checaProjetoExiste, (req, res) => {
   const { id } = req.params
   const { title } = req.body
+  const project = projects.find(project => project.id == id)
 
-  projects[index(id)].tasks.push(title)
+  project.tasks.push(title)
 
-  return res.json(projects)
+  return res.json(project)
 })
-
-function index(id) {
-  return projects.findIndex(project => project.id == id)
-}
 
 server.listen(3000)
