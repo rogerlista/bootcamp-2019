@@ -2,9 +2,16 @@ const express = require('express')
 
 const server = express()
 
+let requisicoes = 0
 const projects = []
 
 server.use(express.json())
+
+server.use((req, res, next) => {
+  console.log(++requisicoes)
+
+  return next()
+})
 
 function checaProjetoExiste(req, res, next) {
   const { id } = req.params
