@@ -1,3 +1,3 @@
-const server = require('./app')
+import server from './app'
 
 server.listen(3000)
