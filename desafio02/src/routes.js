@@ -1,6 +1,7 @@
 import { Router } from 'express'
 
 import sessionController from './app/controllers/session-controller'
+import studentController from './app/controllers/student-controller'
 
 const routes = new Router()
 
@@ -9,5 +10,8 @@ routes.get('/', (req, res) => {
 })
 
 routes.post('/sessions', sessionController.store)
+
+routes.post('/students', studentController.store)
+routes.put('/students/:id', studentController.update)
 
 export default routes
