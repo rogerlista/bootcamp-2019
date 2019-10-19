@@ -1,5 +1,7 @@
 import { Router } from 'express'
 
+import authMiddleware from './app/middlewares/auth'
+
 import sessionController from './app/controllers/session-controller'
 import studentController from './app/controllers/student-controller'
 
@@ -10,6 +12,8 @@ routes.get('/', (req, res) => {
 })
 
 routes.post('/sessions', sessionController.store)
+
+routes.use(authMiddleware)
 
 routes.post('/students', studentController.store)
 routes.put('/students/:id', studentController.update)
