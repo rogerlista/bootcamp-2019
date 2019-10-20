@@ -3,6 +3,7 @@ import multer from 'multer'
 
 import userController from './app/controllers/user-controller'
 import sessionController from './app/controllers/session-controller'
+import providerController from './app/controllers/provider-controller'
 import fileController from './app/controllers/file-controller'
 
 import authMiddleware from './app/middlewares/auth'
@@ -21,6 +22,8 @@ routes.post('/sessions', sessionController.store)
 routes.use(authMiddleware)
 
 routes.put('/users', userController.update)
+
+routes.get('/providers', providerController.index)
 
 routes.post('/files', upload.single('file'), fileController.store)
 
