@@ -30,6 +30,7 @@ routes.get('/providers', providerController.index)
 
 routes.get('/appointments', appointmentController.index)
 routes.post('/appointments', appointmentController.store)
+routes.delete('/appointments/:id', appointmentController.delete)
 
 routes.get('/schedule', scheduleController.index)
 
