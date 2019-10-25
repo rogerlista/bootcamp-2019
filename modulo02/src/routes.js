@@ -34,6 +34,7 @@ routes.post('/appointments', appointmentController.store)
 routes.get('/schedule', scheduleController.index)
 
 routes.get('/notifications', notificationController.index)
+routes.put('/notifications/:id', notificationController.update)
 
 routes.post('/files', upload.single('file'), fileController.store)
 
