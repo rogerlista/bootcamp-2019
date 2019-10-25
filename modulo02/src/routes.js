@@ -6,6 +6,7 @@ import sessionController from './app/controllers/session-controller'
 import providerController from './app/controllers/provider-controller'
 import appointmentController from './app/controllers/appointment-controller'
 import scheduleController from './app/controllers/schedule-controller'
+import notificationController from './app/controllers/notification-controller'
 import fileController from './app/controllers/file-controller'
 
 import authMiddleware from './app/middlewares/auth'
@@ -31,6 +32,8 @@ routes.get('/appointments', appointmentController.index)
 routes.post('/appointments', appointmentController.store)
 
 routes.get('/schedule', scheduleController.index)
+
+routes.get('/notifications', notificationController.index)
 
 routes.post('/files', upload.single('file'), fileController.store)
 
