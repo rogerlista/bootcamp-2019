@@ -7,6 +7,7 @@ import providerController from './app/controllers/provider-controller'
 import appointmentController from './app/controllers/appointment-controller'
 import scheduleController from './app/controllers/schedule-controller'
 import notificationController from './app/controllers/notification-controller'
+import availableController from './app/controllers/available-controller'
 import fileController from './app/controllers/file-controller'
 
 import authMiddleware from './app/middlewares/auth'
@@ -27,6 +28,7 @@ routes.use(authMiddleware)
 routes.put('/users', userController.update)
 
 routes.get('/providers', providerController.index)
+routes.get('/providers/:providerId/available', availableController.index)
 
 routes.get('/appointments', appointmentController.index)
 routes.post('/appointments', appointmentController.store)
