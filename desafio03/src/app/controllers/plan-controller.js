@@ -47,6 +47,38 @@ class PlanController {
   }
 
   async update(req, res) {
+    const schema = yup.object().shape({
+      title: yup.lazy(value =>
+        !value
+          ? yup.mixed().notRequired()
+          : yup
+              .string()
+              .min(3)
+              .required()
+      ),
+      duration: yup.lazy(value =>
+        !value
+          ? yup.mixed().notRequired()
+          : yup
+              .number()
+              .integer()
+              .positive()
+              .required()
+      ),
+      price: yup.lazy(value =>
+        !value
+          ? yup.mixed().notRequired()
+          : yup
+              .number()
+              .positive()
+              .required()
+      ),
+    })
+
+    if (!(await schema.isValid(req.body))) {
+      return res.status(400).json({ error: 'Invalid data' })
+    }
+
     const plan = await Plan.findByPk(req.params.id)
 
     if (!plan) {
