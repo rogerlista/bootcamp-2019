@@ -5,6 +5,7 @@ import authMiddleware from './app/middlewares/auth'
 import sessionController from './app/controllers/session-controller'
 import studentController from './app/controllers/student-controller'
 import planController from './app/controllers/plan-controller'
+import matriculationController from './app/controllers/matriculation-controller'
 
 const routes = new Router()
 
@@ -24,5 +25,11 @@ routes.get('/plans/:id', planController.show)
 routes.post('/plans', planController.store)
 routes.put('/plans/:id', planController.update)
 routes.delete('/plans/:id', planController.delete)
+
+routes.get('/matriculations', matriculationController.index)
+routes.get('/matriculations/:id', matriculationController.show)
+routes.post('/matriculations', matriculationController.store)
+routes.put('/matriculations/:id', matriculationController.update)
+routes.delete('/matriculations/:id', matriculationController.delete)
 
 export default routes
