@@ -2,16 +2,44 @@ import React, { Component } from 'react'
 
 class TechList extends Component {
   state = {
+    newTech: '',
     techs: ['Node.js', 'ReactJS', 'React Native']
   }
+
+  handleInputChange = e => {
+    console.log(e.target.value)
+    this.setState({ newTech: e.target.value })
+  }
+
+  handleSubmit = e => {
+    e.preventDefault()
+
+    console.log(this.state.newTech)
+    this.setState({
+      techs: [...this.state.techs, this.state.newTech],
+      newTech: ''
+    })
+  }
+
   render() {
-    console.log(this.state)
     return (
-      <ul>
-        <li>Node.js</li>
-        <li>ReactJS</li>
-        <li>React Native</li>
-      </ul>
+      <form onSubmit={this.handleSubmit}>
+        <h1>{this.state.newTech}</h1>
+
+        <ul>
+          {this.state.techs.map(tech => (
+            <li key={tech}>{tech}</li>
+          ))}
+        </ul>
+
+        <input
+          type="text"
+          onChange={this.handleInputChange}
+          value={this.state.newTech}
+        />
+
+        <button type="submit">Enviar</button>
+      </form>
     )
   }
 }
