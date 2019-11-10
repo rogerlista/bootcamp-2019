@@ -1,8 +1,10 @@
 import React from 'react'
 
+import Comment from './comment'
+
 function Post({ post }) {
   return (
-    <li className="post-list-item" key={post.id}>
+    <li className="post-list-item">
       <div className="post-list-item-avatar-author">
         <img className="avatar" src={post.author.avatar} />
 
@@ -18,15 +20,7 @@ function Post({ post }) {
 
       <ul className="comment-list">
         {post.comments.map(comment => (
-          <li key={comment.id}>
-            <div className="comment-list-item">
-              <img className="avatar" src={comment.author.avatar} />
-
-              <p>
-                <strong>{comment.author.name}</strong> {comment.content}
-              </p>
-            </div>
-          </li>
+          <Comment key={comment.id} comment={comment} />
         ))}
       </ul>
     </li>
