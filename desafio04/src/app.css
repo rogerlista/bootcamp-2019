@@ -84,6 +84,12 @@ p {
   justify-content: center;
 }
 
+.post-list-item-author span {
+  color: #9a9a9a;
+  font-size: 11px;
+  line-height: 1.6;
+}
+
 .post-list-item hr {
   border: 0.3px solid #eeeeee;
   margin: 20px;

@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 
+import Post from './post'
+
 class PostList extends Component {
   state = {
     posts: [
       {
         id: 1,
         author: {
-          name: 'Julio Alcantara',
+          name: 'Júlio Alcantara',
           avatar: 'https://source.unsplash.com/user/biazar/32x32'
         },
         date: '04 Jun 2019',
@@ -90,34 +92,7 @@ class PostList extends Component {
     return (
       <ul className="post-list">
         {this.state.posts.map(post => (
-          <li className="post-list-item" key={post.id}>
-            <div className="post-list-item-avatar-author">
-              <img className="avatar" src={post.author.avatar} />
-
-              <div className="post-list-item-author">
-                <strong>{post.author.name}</strong>
-                <small>{post.date}</small>
-              </div>
-            </div>
-
-            <p>{post.content}</p>
-
-            <hr />
-
-            <ul className="comment-list">
-              {post.comments.map(comment => (
-                <li key={comment.id}>
-                  <div className="comment-list-item">
-                    <img className="avatar" src={comment.author.avatar} />
-
-                    <p>
-                      <strong>{comment.author.name}</strong> {comment.content}
-                    </p>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </li>
+          <Post key={post.id} post={post} />
         ))}
       </ul>
     )
