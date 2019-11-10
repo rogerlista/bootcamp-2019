@@ -2,10 +2,16 @@ import React from 'react'
 
 import './app.css'
 
-import Header from './components/header.js'
+import Header from './components/header'
+import PostList from './components/post-list'
 
 function App() {
-  return <Header />
+  return (
+    <>
+      <Header />
+      <PostList />
+    </>
+  )
 }
 
 export default App
