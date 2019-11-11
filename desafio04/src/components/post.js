@@ -4,11 +4,11 @@ import Comment from './comment'
 
 function Post({ post }) {
   return (
-    <li className="post-list-item">
-      <div className="post-list-item-avatar-author">
+    <li className="post">
+      <div className="post-avatar-author">
         <img className="avatar" src={post.author.avatar} />
 
-        <div className="post-list-item-author">
+        <div className="post-author">
           <strong>{post.author.name}</strong>
           <span>{post.date}</span>
         </div>

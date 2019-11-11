@@ -3,7 +3,7 @@ import React from 'react'
 function Comment({ comment }) {
   return (
     <li>
-      <div className="comment-list-item">
+      <div className="comment">
         <img className="avatar" src={comment.author.avatar} />
 
         <p>

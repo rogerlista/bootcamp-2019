@@ -24,7 +24,8 @@ body {
   color: #fff;
   font-size: 14px;
   height: 64px;
-  padding: 20px 42px;
+  min-width: 980px;
+  padding: 0 42px;
 
   display: flex;
   align-items: center;
@@ -47,7 +48,6 @@ body {
 .avatar {
   border-radius: 50%;
   height: 32px;
-  margin: 20px 10px 15px 20px;
   min-height: 32px;
   min-width: 32px;
   width: 32px;
@@ -55,63 +55,64 @@ body {
 
 .post-list {
   background: #f2f2f2;
-  margin: 20px auto;
+  margin: 0 auto;
   width: 725px;
 }
 
-.post-list strong,
-p {
+.post {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  line-height: 20px;
+  margin: 14px 12px;
+  padding: 20px 20px 0;
+}
+
+.post strong {
   font-size: 14px;
 }
 
-.post-list p {
-  line-height: 1.6;
-  margin: 0px 20px 20px;
+.post > p {
+  font-size: 14px;
+  margin-top: 15px;
 }
 
-.post-list-item {
-  background: #fff;
-  margin: 14px 12px;
-}
-
-.post-list-item-avatar-author {
-  display: flex;
-}
-
-.post-list-item-author {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.post-list-item-author span {
-  color: #9a9a9a;
-  font-size: 11px;
-  line-height: 1.6;
-}
-
-.post-list-item hr {
+.post hr {
   border: 0.5px solid #eeeeee;
-  margin: 20px;
+  margin-top: 20px;
   width: 660px;
 }
 
-.comment-list {
-  margin-top: 12px;
-}
-
-.comment-list-item {
+.post-avatar-author {
   display: flex;
 }
 
-.comment-list-item .avatar {
-  margin-top: 0px;
+.post-author {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 10px;
 }
 
-.comment-list-item p {
+.post-author span {
+  color: #9a9a9a;
+  font-size: 11px;
+  line-height: 15px;
+}
+
+.comment-list {
+  margin-top: 20px;
+}
+
+.comment {
+  display: flex;
+}
+
+.comment p {
   background: #eeeeee;
   border-radius: 20px;
   font-size: 13px;
-  margin: 0 12px 20px 0;
+  margin-left: 10px;
+  margin-bottom: 15px;
   padding: 10px 15px;
 }
