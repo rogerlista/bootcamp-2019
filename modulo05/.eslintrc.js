@@ -7,6 +7,7 @@ module.exports = {
     'standard',
     'prettier',
     'prettier/react',
+    'prettier/standard',
     'plugin:react/recommended',
   ],
   globals: {
@@ -21,10 +22,9 @@ module.exports = {
     ecmaVersion: 2018,
     sourceType: 'module',
   },
-  plugins: ['react', 'prettier'],
+  plugins: ['react', 'prettier', 'standard'],
   rules: {
     'prettier/prettier': 'error',
-    'react/jsx-filename-extension': ['warn', { extensions: ['.jsx', '.js'] }],
     'import/prefer-default-export': 'off',
   },
 }
