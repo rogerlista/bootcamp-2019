@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 
 import { FaGithubAlt, FaPlus, FaSpinner } from 'react-icons/fa'
 
@@ -84,7 +85,10 @@ class Main extends Component {
           {repositories.map(repository => (
             <li key={repository.name}>
               <span>{repository.name}</span>
-              <a href="">Detalhes</a>
+              {/* encodeURIComponent é uma função do javascript que realiza o encode da barra */}
+              <Link to={`/repository/${encodeURIComponent(repository.name)}`}>
+                Detalhes
+              </Link>
             </li>
           ))}
         </List>
