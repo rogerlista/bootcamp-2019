@@ -40,6 +40,19 @@ export const Owner = styled.header`
     text-align: center;
     max-width: 400px;
   }
+
+  label {
+    margin-top: 30px;
+    font-size: 14px;
+    font-weight: 600;
+
+    select {
+      font-size: 12px;
+      margin-left: 6px;
+      padding: 2px;
+      width: 100px;
+    }
+  }
 `
 
 export const IssueList = styled.ul`

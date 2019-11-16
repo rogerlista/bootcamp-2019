@@ -20,6 +20,8 @@ export default class Repository extends Component {
     repository: {},
     issues: [],
     isLoading: true,
+    selectedState: 'open',
+    issueStates: ['open', 'closed', 'all'],
   }
 
   async componentDidMount() {
@@ -44,8 +46,34 @@ export default class Repository extends Component {
     })
   }
 
+  async componentDidUpdate(_, prevState) {
+    const { selectedState } = this.state
+
+    if (prevState.selectedState !== selectedState) {
+      const issues = await api.get(`${prevState.repository.url}/issues`, {
+        params: {
+          state: selectedState,
+        },
+      })
+
+      this.setState({
+        issues: issues.data,
+      })
+    }
+  }
+
+  handleChangeSelect = e => {
+    this.setState({ selectedState: e.target.value })
+  }
+
   render() {
-    const { repository, issues, isLoading } = this.state
+    const {
+      repository,
+      issues,
+      isLoading,
+      selectedState,
+      issueStates,
+    } = this.state
 
     if (isLoading) {
       return <Loading>Carregando</Loading>
@@ -58,6 +86,17 @@ export default class Repository extends Component {
           <img src={repository.owner.avatar_url} alt={repository.owner.login} />
           <h1>{repository.name}</h1>
           <p>{repository.description}</p>
+
+          <label>
+            Issues
+            <select value={selectedState} onChange={this.handleChangeSelect}>
+              {issueStates.map(state => (
+                <option key={state} value={state}>
+                  {state}
+                </option>
+              ))}
+            </select>
+          </label>
         </Owner>
 
         <IssueList>
