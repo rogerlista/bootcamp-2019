@@ -44,6 +44,14 @@ class Main extends Component {
 
       const { newRepo, repositories } = this.state
 
+      const repository = repositories.find(
+        repository => repository.name === newRepo
+      )
+
+      if (repository) {
+        throw new Error('Repositório já existe')
+      }
+
       const response = await api.get(`/repos/${newRepo}`)
 
       const data = {
@@ -56,7 +64,7 @@ class Main extends Component {
       })
     } catch (error) {
       this.setState({ error: true })
-      console.log('Repositório não localizado.', error)
+      console.log(error)
     } finally {
       this.setState({ isLoading: false })
     }
