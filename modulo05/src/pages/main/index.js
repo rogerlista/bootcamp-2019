@@ -44,6 +44,10 @@ class Main extends Component {
 
       const { newRepo, repositories } = this.state
 
+      if (newRepo.trim().length === 0) {
+        throw new Error('Informe um repositório')
+      }
+
       const repository = repositories.find(
         repository => repository.name === newRepo
       )
