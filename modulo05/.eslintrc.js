@@ -24,6 +24,7 @@ module.exports = {
   },
   plugins: ['react', 'prettier', 'standard'],
   rules: {
+    camelcase: ['error', properties: 'never' }],
     'prettier/prettier': 'error',
     'import/prefer-default-export': 'off',
   },
