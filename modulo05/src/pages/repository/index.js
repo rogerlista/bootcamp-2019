@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
 
 import api from '../../services/api'
 
@@ -20,12 +21,16 @@ export default class Repository extends Component {
     repository: {},
     issues: [],
     isLoading: true,
+    page: 1,
+    per_page: 5,
     selectedState: 'open',
     issueStates: ['open', 'closed', 'all'],
+    url: null,
   }
 
   async componentDidMount() {
     const { match } = this.props
+    const { page, per_page, selectedState } = this.state
 
     const repoName = decodeURIComponent(match.params.repository)
 
@@ -33,8 +38,9 @@ export default class Repository extends Component {
       api.get(`/repos/${repoName}`),
       api.get(`/repos/${repoName}/issues`, {
         params: {
-          state: 'open',
-          per_page: 5,
+          state: selectedState,
+          page,
+          per_page,
         },
       }),
     ])
@@ -46,24 +52,44 @@ export default class Repository extends Component {
     })
   }
 
-  async componentDidUpdate(_, prevState) {
+  componentDidUpdate(_, prevState) {
     const { selectedState } = this.state
 
     if (prevState.selectedState !== selectedState) {
-      const issues = await api.get(`${prevState.repository.url}/issues`, {
-        params: {
-          state: selectedState,
-        },
-      })
-
-      this.setState({
-        issues: issues.data,
-      })
+      this.issuePage()
     }
   }
 
   handleChangeSelect = e => {
     this.setState({ selectedState: e.target.value })
+  }
+
+  handleNextPage = () => {
+    let { page } = this.state
+    this.setState({ page: ++page })
+    this.issuePage()
+  }
+
+  handlePreviewPage = () => {
+    let { page } = this.state
+    this.setState({ page: --page })
+    this.issuePage()
+  }
+
+  async issuePage() {
+    const { repository, page, per_page, selectedState } = this.state
+
+    const issues = await api.get(`${repository.url}/issues`, {
+      params: {
+        state: selectedState,
+        page,
+        per_page,
+      },
+    })
+
+    this.setState({
+      issues: issues.data,
+    })
   }
 
   render() {
@@ -87,16 +113,27 @@ export default class Repository extends Component {
           <h1>{repository.name}</h1>
           <p>{repository.description}</p>
 
-          <label>
-            Issues
-            <select value={selectedState} onChange={this.handleChangeSelect}>
-              {issueStates.map(state => (
-                <option key={state} value={state}>
-                  {state}
-                </option>
-              ))}
-            </select>
-          </label>
+          <div className="filter">
+            <label>
+              Issues
+              <select value={selectedState} onChange={this.handleChangeSelect}>
+                {issueStates.map(state => (
+                  <option key={state} value={state}>
+                    {state}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <div className="actions">
+              <button onClick={this.handlePreviewPage}>
+                <FaChevronLeft />
+              </button>
+              <button onClick={this.handleNextPage}>
+                <FaChevronRight />
+              </button>
+            </div>
+          </div>
         </Owner>
 
         <IssueList>

@@ -41,23 +41,42 @@ export const Owner = styled.header`
     max-width: 400px;
   }
 
-  label {
+  .filter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
     margin-top: 30px;
-    font-size: 14px;
-    font-weight: 600;
+    width: 100%;
+
+    label {
+      font-size: 12px;
+      font-weight: 600;
+    }
 
     select {
+      border: 1px solid #eee;
+      border-radius: 4px;
       font-size: 12px;
       margin-left: 6px;
-      padding: 2px;
+      padding: 1px;
       width: 100px;
+    }
+
+    button {
+      background: #fff;
+      border: 1px solid #eee;
+      border-radius: 4px;
+      font-size: 10px;
+      margin-left: 4px;
+      padding: 5px 14px 2px;
     }
   }
 `
 
 export const IssueList = styled.ul`
   padding-top: 30px;
-  margin-top: 30px;
+  margin-top: 10px;
   border-top: 1px solid #eee;
   list-style: none;
 
