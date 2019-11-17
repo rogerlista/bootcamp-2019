@@ -40,43 +40,11 @@ export const Owner = styled.header`
     text-align: center;
     max-width: 400px;
   }
-
-  .filter {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    margin-top: 30px;
-    width: 100%;
-
-    label {
-      font-size: 12px;
-      font-weight: 600;
-    }
-
-    select {
-      border: 1px solid #eee;
-      border-radius: 4px;
-      font-size: 12px;
-      margin-left: 6px;
-      padding: 1px;
-      width: 100px;
-    }
-
-    button {
-      background: #fff;
-      border: 1px solid #eee;
-      border-radius: 4px;
-      font-size: 10px;
-      margin-left: 4px;
-      padding: 5px 14px 2px;
-    }
-  }
 `
 
 export const IssueList = styled.ul`
-  padding-top: 30px;
-  margin-top: 10px;
+  padding-top: 15px;
+  margin-top: 30px;
   border-top: 1px solid #eee;
   list-style: none;
 
@@ -130,6 +98,25 @@ export const IssueList = styled.ul`
         font-size: 12px;
         color: #999;
       }
+    }
+  }
+`
+
+export const IssueFilter = styled.div`
+  display: flex;
+  justify-content: center;
+  padding-bottom: 15px;
+
+  button {
+    border-radius: 4px;
+    outline: 0;
+    border: 0;
+    padding: 8px;
+    margin: 0 0.25rem;
+
+    &:nth-child(${props => props.active + 1}) {
+      background: #576574;
+      color: white;
     }
   }
 `
