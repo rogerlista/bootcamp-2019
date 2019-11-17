@@ -6,7 +6,7 @@ import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
 import api from '../../services/api'
 
 import Container from '../../components/container'
-import { Loading, Owner, IssueList, IssueFilter } from './styles'
+import { Loading, Owner, IssueList, IssueFilter, PageActions } from './styles'
 
 export default class Repository extends Component {
   static propTypes = {
@@ -27,6 +27,7 @@ export default class Repository extends Component {
       { state: 'open', label: 'Abertas', active: false },
       { state: 'closed', label: 'Fechadas', active: false },
     ],
+    page: 1,
   }
 
   async componentDidMount() {
@@ -54,7 +55,7 @@ export default class Repository extends Component {
 
   loadIssues = async () => {
     const { match } = this.props
-    const { filters, filterIndex } = this.state
+    const { filters, filterIndex, page } = this.state
 
     const repoName = decodeURIComponent(match.params.repository)
 
@@ -62,6 +63,7 @@ export default class Repository extends Component {
       params: {
         state: filters[filterIndex].state,
         per_page: 5,
+        page,
       },
     })
 
@@ -73,8 +75,25 @@ export default class Repository extends Component {
     this.loadIssues()
   }
 
+  handlePage = async action => {
+    const { page } = this.state
+
+    await this.setState({
+      page: action === 'back' ? page - 1 : page + 1,
+    })
+
+    this.loadIssues()
+  }
+
   render() {
-    const { repository, issues, isLoading, filters, filterIndex } = this.state
+    const {
+      repository,
+      issues,
+      isLoading,
+      filters,
+      filterIndex,
+      page,
+    } = this.state
 
     if (isLoading) {
       return <Loading>Carregando</Loading>
@@ -117,6 +136,21 @@ export default class Repository extends Component {
             </li>
           ))}
         </IssueList>
+
+        <PageActions>
+          <button
+            type="button"
+            disabled={page < 2}
+            onClick={() => this.handlePage('back')}
+          >
+            <FaChevronLeft />
+          </button>
+
+          <span>Página {page}</span>
+          <button type="button" onClick={() => this.handlePage('next')}>
+            <FaChevronRight />
+          </button>
+        </PageActions>
       </Container>
     )
   }
