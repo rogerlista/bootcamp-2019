@@ -17,6 +17,7 @@ import {
   Info,
   Title,
   Author,
+  Footer,
 } from './styles'
 
 export default class User extends Component {
@@ -36,57 +37,53 @@ export default class User extends Component {
     page: 1,
   }
 
-  async componentDidMount() {
-    const { navigation } = this.props
-    const user = navigation.getParam('user')
-
-    try {
-      this.setState({ loading: true })
-
-      const response = await api.get(`/users/${user.login}/starred`)
-
-      this.setState({ stars: response.data })
-    } catch (error) {
-      console.tron.log('Error', error)
-    } finally {
-      this.setState({ loading: false })
-    }
+  componentDidMount() {
+    this.fetchApi()
   }
 
   loadMore = async () => {
-    const { stars } = this.state
+    if (!this.state.loading) {
+      this.setState({ page: this.state.page + 1 })
+      this.fetchApi()
+    }
+  }
+
+  fetchApi = async () => {
+    const { stars, page } = this.state
     const { navigation } = this.props
     const user = navigation.getParam('user')
-    const page = this.state.page + 1
+
+    this.setState({ loading: true })
 
     try {
-      this.setState({ loading: true })
-
       const response = await api.get(
         `/users/${user.login}/starred?page=${page}`
       )
 
-      const data = stars.concat(response.data)
-
-      this.setState({ stars: data, page })
+      this.setState({
+        stars:
+          page === 1 ? Array.from(response.data) : [...stars, ...response.data],
+      })
     } catch (error) {
-      console.tron.log('Error', error)
+      console.tron.log('Não foi possível obter os dados', error)
     } finally {
       this.setState({ loading: false })
     }
   }
 
   renderFooter = () => {
-    if (this.state.loading) {
-      return <ActivityIndicator color="#7159c1" size="large" />
-    }
+    if (!this.state.loading) return null
 
-    return null
+    return (
+      <Footer>
+        <ActivityIndicator color="#7159c1" size="large" />
+      </Footer>
+    )
   }
 
   render() {
     const { navigation } = this.props
-    const { stars, loading, page } = this.state
+    const { stars } = this.state
     const user = navigation.getParam('user')
 
     return (
@@ -97,26 +94,22 @@ export default class User extends Component {
           <Bio>{user.bio}</Bio>
         </Header>
 
-        {loading && page === 1 ? (
-          <ActivityIndicator color="#7159c1" size="large" />
-        ) : (
-          <Stars
-            data={stars}
-            keyExtractor={star => String(star.id)}
-            renderItem={({ item }) => (
-              <Starred>
-                <OwnerAvatar source={{ uri: item.owner.avatar_url }} />
-                <Info>
-                  <Title>{item.name}</Title>
-                  <Author>{item.owner.login}</Author>
-                </Info>
-              </Starred>
-            )}
-            ListFooterComponent={this.renderFooter}
-            onEndReachedThreshold={0.2}
-            onEndReached={this.loadMore}
-          />
-        )}
+        <Stars
+          data={stars}
+          keyExtractor={star => String(star.id)}
+          renderItem={({ item }) => (
+            <Starred>
+              <OwnerAvatar source={{ uri: item.owner.avatar_url }} />
+              <Info>
+                <Title>{item.name}</Title>
+                <Author>{item.owner.login}</Author>
+              </Info>
+            </Starred>
+          )}
+          onEndReached={this.loadMore}
+          onEndReachedThreshold={0}
+          ListFooterComponent={this.renderFooter}
+        />
       </Container>
     )
   }
