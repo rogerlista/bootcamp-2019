@@ -33,22 +33,60 @@ export default class User extends Component {
   state = {
     stars: [],
     loading: false,
+    page: 1,
   }
 
   async componentDidMount() {
     const { navigation } = this.props
     const user = navigation.getParam('user')
 
-    this.setState({ loading: true })
+    try {
+      this.setState({ loading: true })
 
-    const response = await api.get(`/users/${user.login}/starred`)
+      const response = await api.get(`/users/${user.login}/starred`)
 
-    this.setState({ stars: response.data, loading: false })
+      this.setState({ stars: response.data })
+    } catch (error) {
+      console.tron.log('Error', error)
+    } finally {
+      this.setState({ loading: false })
+    }
+  }
+
+  loadMore = async () => {
+    const { stars } = this.state
+    const { navigation } = this.props
+    const user = navigation.getParam('user')
+    const page = this.state.page + 1
+
+    try {
+      this.setState({ loading: true })
+
+      const response = await api.get(
+        `/users/${user.login}/starred?page=${page}`
+      )
+
+      const data = stars.concat(response.data)
+
+      this.setState({ stars: data, page })
+    } catch (error) {
+      console.tron.log('Error', error)
+    } finally {
+      this.setState({ loading: false })
+    }
+  }
+
+  renderFooter = () => {
+    if (this.state.loading) {
+      return <ActivityIndicator color="#7159c1" size="large" />
+    }
+
+    return null
   }
 
   render() {
     const { navigation } = this.props
-    const { stars, loading } = this.state
+    const { stars, loading, page } = this.state
     const user = navigation.getParam('user')
 
     return (
@@ -59,7 +97,7 @@ export default class User extends Component {
           <Bio>{user.bio}</Bio>
         </Header>
 
-        {loading ? (
+        {loading && page === 1 ? (
           <ActivityIndicator color="#7159c1" size="large" />
         ) : (
           <Stars
@@ -74,6 +112,9 @@ export default class User extends Component {
                 </Info>
               </Starred>
             )}
+            ListFooterComponent={this.renderFooter}
+            onEndReachedThreshold={0.2}
+            onEndReached={this.loadMore}
           />
         )}
       </Container>
