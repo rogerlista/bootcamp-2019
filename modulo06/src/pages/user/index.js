@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import { ActivityIndicator } from 'react-native'
+import { ActivityIndicator, TouchableHighlight } from 'react-native'
 
 import api from '../../services/api'
 
@@ -28,6 +28,7 @@ export default class User extends Component {
   static propTypes = {
     navigation: PropTypes.shape({
       getParam: PropTypes.func,
+      navigate: PropTypes.func,
     }).isRequired,
   }
 
@@ -86,6 +87,12 @@ export default class User extends Component {
     this.fetchApi()
   }
 
+  handleNavigate = repository => {
+    const { navigation } = this.props
+
+    navigation.navigate('Repository', { repository })
+  }
+
   render() {
     const { navigation } = this.props
     const { stars } = this.state
@@ -103,13 +110,15 @@ export default class User extends Component {
           data={stars}
           keyExtractor={star => String(star.id)}
           renderItem={({ item }) => (
-            <Starred>
-              <OwnerAvatar source={{ uri: item.owner.avatar_url }} />
-              <Info>
-                <Title>{item.name}</Title>
-                <Author>{item.owner.login}</Author>
-              </Info>
-            </Starred>
+            <TouchableHighlight onPress={() => this.handleNavigate(item)}>
+              <Starred>
+                <OwnerAvatar source={{ uri: item.owner.avatar_url }} />
+                <Info>
+                  <Title>{item.name}</Title>
+                  <Author>{item.owner.login}</Author>
+                </Info>
+              </Starred>
+            </TouchableHighlight>
           )}
           onRefresh={this.refreshList}
           refreshing={this.state.refreshing}
