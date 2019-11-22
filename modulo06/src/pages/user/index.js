@@ -34,6 +34,7 @@ export default class User extends Component {
   state = {
     stars: [],
     loading: false,
+    refreshing: false,
     page: 1,
   }
 
@@ -61,13 +62,12 @@ export default class User extends Component {
       )
 
       this.setState({
-        stars:
-          page === 1 ? Array.from(response.data) : [...stars, ...response.data],
+        stars: page === 1 ? response.data : [...stars, ...response.data],
       })
     } catch (error) {
       console.tron.log('Não foi possível obter os dados', error)
     } finally {
-      this.setState({ loading: false })
+      this.setState({ loading: false, refreshing: false })
     }
   }
 
@@ -79,6 +79,11 @@ export default class User extends Component {
         <ActivityIndicator color="#7159c1" size="large" />
       </Footer>
     )
+  }
+
+  refreshList = () => {
+    this.setState({ page: 1, refreshing: false })
+    this.fetchApi()
   }
 
   render() {
@@ -106,6 +111,8 @@ export default class User extends Component {
               </Info>
             </Starred>
           )}
+          onRefresh={this.refreshList}
+          refreshing={this.state.refreshing}
           onEndReached={this.loadMore}
           onEndReachedThreshold={0}
           ListFooterComponent={this.renderFooter}

@@ -75,6 +75,7 @@ export const Author = styled.Text`
   color: #666;
   margin-top: 2px;
 `
+
 export const Footer = styled.View`
   align-items: center;
   padding-top: 20px;
