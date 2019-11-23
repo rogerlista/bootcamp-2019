@@ -18,7 +18,6 @@ import {
   Title,
   Author,
   Loading,
-  Footer,
 } from './styles'
 
 export default class User extends Component {
@@ -76,7 +75,7 @@ export default class User extends Component {
   }
 
   refreshList = () => {
-    this.setState({ page: 1, refreshing: false })
+    this.setState({ page: 1, stars: [], refreshing: true })
     this.load()
   }
 
@@ -88,7 +87,7 @@ export default class User extends Component {
 
   render() {
     const { navigation } = this.props
-    const { stars } = this.state
+    const { stars, refreshing } = this.state
 
     const user = navigation.getParam('user')
 
@@ -115,9 +114,9 @@ export default class User extends Component {
             </TouchableHighlight>
           )}
           onRefresh={this.refreshList}
-          refreshing={this.state.refreshing}
+          refreshing={refreshing}
           onEndReached={this.loadMore}
-          onEndReachedThreshold={0}
+          onEndReachedThreshold={0.2}
           ListFooterComponent={this.renderFooter}
         />
       </Container>
