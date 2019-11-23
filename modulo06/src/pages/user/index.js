@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import { ActivityIndicator, TouchableHighlight } from 'react-native'
-
 import api from '../../services/api'
 
 import {
@@ -103,15 +101,13 @@ export default class User extends Component {
           data={stars}
           keyExtractor={star => String(star.id)}
           renderItem={({ item }) => (
-            <TouchableHighlight onPress={() => this.handleNavigate(item)}>
-              <Starred>
-                <OwnerAvatar source={{ uri: item.owner.avatar_url }} />
-                <Info>
-                  <Title>{item.name}</Title>
-                  <Author>{item.owner.login}</Author>
-                </Info>
-              </Starred>
-            </TouchableHighlight>
+            <Starred onPress={() => this.handleNavigate(item)}>
+              <OwnerAvatar source={{ uri: item.owner.avatar_url }} />
+              <Info>
+                <Title>{item.name}</Title>
+                <Author>{item.owner.login}</Author>
+              </Info>
+            </Starred>
           )}
           onRefresh={this.refreshList}
           refreshing={refreshing}
