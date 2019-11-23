@@ -17,6 +17,7 @@ import {
   Info,
   Title,
   Author,
+  Loading,
   Footer,
 } from './styles'
 
@@ -34,33 +35,24 @@ export default class User extends Component {
 
   state = {
     stars: [],
-    loading: false,
+    loading: true,
     refreshing: false,
     page: 1,
   }
 
   componentDidMount() {
-    this.fetchApi()
+    this.load()
   }
 
-  loadMore = async () => {
-    if (!this.state.loading) {
-      this.setState({ page: this.state.page + 1 })
-      this.fetchApi()
-    }
-  }
-
-  fetchApi = async () => {
+  load = async () => {
     const { stars, page } = this.state
     const { navigation } = this.props
     const user = navigation.getParam('user')
 
-    this.setState({ loading: true })
-
     try {
-      const response = await api.get(
-        `/users/${user.login}/starred?page=${page}`
-      )
+      const response = await api.get(`/users/${user.login}/starred`, {
+        params: { page },
+      })
 
       this.setState({
         stars: page === 1 ? response.data : [...stars, ...response.data],
@@ -72,19 +64,20 @@ export default class User extends Component {
     }
   }
 
+  loadMore = async () => {
+    this.setState({ page: this.state.page + 1 })
+    this.load()
+  }
+
   renderFooter = () => {
     if (!this.state.loading) return null
 
-    return (
-      <Footer>
-        <ActivityIndicator color="#7159c1" size="large" />
-      </Footer>
-    )
+    return <Loading />
   }
 
   refreshList = () => {
     this.setState({ page: 1, refreshing: false })
-    this.fetchApi()
+    this.load()
   }
 
   handleNavigate = repository => {
@@ -96,6 +89,7 @@ export default class User extends Component {
   render() {
     const { navigation } = this.props
     const { stars } = this.state
+
     const user = navigation.getParam('user')
 
     return (
