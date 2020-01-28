@@ -2,6 +2,8 @@ const express = require('express')
 
 const server = express()
 
+const users = ['Juca', 'Teobaldo', 'Tabajara']
+
 // query params -> localhost:3000/users?nome=Juca
 // route params -> localhost:3000/users/34
 
@@ -11,10 +13,10 @@ server.get('/users', (req, res) => {
   return res.json({ message: `Hello ${nome}` })
 })
 
-server.get('/users/:id', (req, res) => {
-  const { id } = req.params
+server.get('/users/:index', (req, res) => {
+  const { index } = req.params
 
-  return res.json({ message: `Usuário com id ${id}` })
+  return res.json(users[index])
 })
 
 server.listen('3000')
