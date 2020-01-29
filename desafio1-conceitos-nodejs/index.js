@@ -3,25 +3,23 @@ const express = require('express')
 const server = express()
 
 const projects = []
-let contadorRequisicoes = 0
 
 server.use(express.json())
 
 server.use((req, res, next) => {
-  console.log('Número de requisições', ++contadorRequisicoes)
+  console.count('Requisições')
   return next()
 })
 
 function checkProjectExists(req, res, next) {
   const { id } = req.params
-  const index = projects.findIndex(project => project.id === id)
+  const project = projects.find(project => project.id === id)
 
-  if (index < 0) {
-    return res.json({ error: 'Project not found.' })
+  if (!project) {
+    return res.status(400).json({ error: 'Project not found.' })
   }
 
-  req.projectIndex = index
-  req.project = projects[index]
+  req.project = project
 
   return next()
 }
@@ -50,22 +48,26 @@ server.post('/projects', (req, res) => {
 server.put('/projects/:id', checkProjectExists, (req, res) => {
   const { title } = req.body
 
-  projects[req.projectIndex].title = title
+  req.project.title = title
 
-  return res.json(projects[req.projectIndex])
+  return res.json(req.project)
 })
 
 server.delete('/projects/:id', checkProjectExists, (req, res) => {
-  projects.splice(req.projectIndex, 1)
+  const { id } = req.params
+  const index = projects.findIndex(project => project.id === id)
+
+  projects.splice(index, 1)
+
   return res.send()
 })
 
 server.post('/projects/:id/tasks', checkProjectExists, (req, res) => {
   const { title } = req.body
 
-  projects[req.projectIndex].tasks.push(title)
+  req.project.tasks.push(title)
 
-  return res.json(projects[req.projectIndex])
+  return res.json(req.project)
 })
 
 server.listen('3000')
