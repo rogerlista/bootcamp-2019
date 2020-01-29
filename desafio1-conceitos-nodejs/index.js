@@ -3,17 +3,35 @@ const express = require('express')
 const server = express()
 
 const projects = []
+let contadorRequisicoes = 0
 
 server.use(express.json())
+
+server.use((req, res, next) => {
+  console.log('Número de requisições', ++contadorRequisicoes)
+  return next()
+})
+
+function checkProjectExists(req, res, next) {
+  const { id } = req.params
+  const index = projects.findIndex(project => project.id === id)
+
+  if (index < 0) {
+    return res.json({ error: 'Project not found.' })
+  }
+
+  req.projectIndex = index
+  req.project = projects[index]
+
+  return next()
+}
 
 server.get('/projects', (req, res) => {
   return res.json(projects)
 })
 
-server.get('/projects/:id', (req, res) => {
-  const id = parseInt(req.params.id, 10)
-  const project = projects.find(project => project.id === id)
-  return res.json(project)
+server.get('/projects/:id', checkProjectExists, (req, res) => {
+  return res.json(req.project)
 })
 
 server.post('/projects', (req, res) => {
@@ -29,41 +47,25 @@ server.post('/projects', (req, res) => {
   return res.json(project)
 })
 
-server.put('/projects/:id', (req, res) => {
+server.put('/projects/:id', checkProjectExists, (req, res) => {
   const { title } = req.body
-  const index = getIndex(req.params.id)
 
-  if (index >= 0) {
-    projects[index].title = title
-    return res.json(projects[index])
-  }
+  projects[req.projectIndex].title = title
 
-  return res.send('Project not found')
+  return res.json(projects[req.projectIndex])
 })
 
-server.delete('/projects/:id', (req, res) => {
-  const index = getIndex(req.params.id)
-
-  projects.splice(index, 1)
-
+server.delete('/projects/:id', checkProjectExists, (req, res) => {
+  projects.splice(req.projectIndex, 1)
   return res.send()
 })
 
-server.post('/projects/:id/tasks', (req, res) => {
+server.post('/projects/:id/tasks', checkProjectExists, (req, res) => {
   const { title } = req.body
-  const index = getIndex(req.params.id)
 
-  if (index >= 0) {
-    projects[index].tasks.push(title)
-    return res.json(projects[index])
-  }
+  projects[req.projectIndex].tasks.push(title)
 
-  return res.send('Project not found')
+  return res.json(projects[req.projectIndex])
 })
-
-function getIndex(idText) {
-  const id = parseInt(idText, 10)
-  return projects.findIndex(project => project.id === id)
-}
 
 server.listen('3000')
