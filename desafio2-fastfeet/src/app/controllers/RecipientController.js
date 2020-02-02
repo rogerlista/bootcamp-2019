@@ -9,7 +9,7 @@ class RecipientController {
   }
 
   async show(req, res) {
-    const recipient = await Recipient.findByPk(req.params.id)
+    const recipient = await Recipient.findByPk(req.recipientId)
 
     if (!recipient) {
       return res.status(404).json({ error: 'Recipient does not exists' })
@@ -43,7 +43,7 @@ class RecipientController {
   }
 
   async update(req, res) {
-    const recipient = await Recipient.findByPk(req.params.id)
+    const recipient = await Recipient.findByPk(req.recipientId)
 
     if (!recipient) {
       return res.status(404).json({ error: 'Recipient does not exists' })
@@ -73,7 +73,7 @@ class RecipientController {
   }
 
   async delete(req, res) {
-    const recipient = await Recipient.findByPk(req.params.id)
+    const recipient = await Recipient.findByPk(req.recipientId)
 
     if (!recipient) {
       return res.status(404).json({ error: 'Recipient does not exists' })
