@@ -1,5 +1,6 @@
 import * as Yup from 'yup'
 
+import Recipient from '../models/Recipient'
 import Deliveryman from '../models/Deliveryman'
 import Order from '../models/Order'
 
@@ -7,7 +8,25 @@ import Mail from '../../lib/Mail'
 
 class OrderController {
   async index(req, res) {
-    const orders = await Order.findAll()
+    const { page = 1 } = req.query
+    const orders = await Order.findAll({
+      attributes: ['id', 'product', 'canceled_at', 'start_date', 'end_date'],
+      limit: 20,
+      offset: (page - 1) * 20,
+      include: [
+        {
+          model: Recipient,
+          as: 'recipient',
+          attributes: ['id', 'name', 'city', 'state'],
+        },
+        {
+          model: Deliveryman,
+          as: 'deliveryman',
+          attributes: ['id', 'name', 'email'],
+        },
+      ],
+    })
+
     return res.json(orders)
   }
 
