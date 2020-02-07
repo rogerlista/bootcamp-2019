@@ -5,6 +5,8 @@ import SessionController from './app/controllers/SessionController'
 import RecipientController from './app/controllers/RecipientController'
 import DeliverymanController from './app/controllers/DeliverymanController'
 import OrderController from './app/controllers/OrderController'
+import DeliveryController from './app/controllers/DeliveryController'
+import HandedOutController from './app/controllers/HandedOutController'
 import FileController from './app/controllers/FileController'
 
 import multerConfig from './config/multer'
@@ -19,6 +21,9 @@ routes.get('/', (req, res) => {
 })
 
 routes.post('/sessions', SessionController.store)
+
+routes.get('/deliverymen/:deliveryman_id/deliveries', DeliveryController.index)
+routes.get('/deliverymen/:deliveryman_id/handedout', HandedOutController.index)
 
 routes.use(authMiddleware)
 
