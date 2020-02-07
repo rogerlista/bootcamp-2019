@@ -4,7 +4,22 @@ import Recipient from '../models/Recipient'
 
 class RecipientController {
   async index(req, res) {
-    const recipients = await Recipient.findAll()
+    const { page = 1 } = req.query
+    const recipients = await Recipient.findAll({
+      attributes: [
+        'id',
+        'name',
+        'street',
+        'number',
+        'complement',
+        'city',
+        'state',
+        'zip_code',
+      ],
+      order: ['name'],
+      limit: 20,
+      offset: (page - 1) * 20,
+    })
     return res.json(recipients)
   }
 
@@ -29,7 +44,7 @@ class RecipientController {
     })
 
     if (!(await schema.isValid(req.body))) {
-      return res.status(400).json({ error: 'Validation fails.'})
+      return res.status(400).json({ error: 'Validation fails.' })
     }
 
     const {
@@ -66,7 +81,7 @@ class RecipientController {
     })
 
     if (!(await schema.isValid(req.body))) {
-      return res.status(400).json({ error: 'Validation fails.'})
+      return res.status(400).json({ error: 'Validation fails.' })
     }
 
     const recipient = await Recipient.findByPk(req.params.id)
