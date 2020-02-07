@@ -10,6 +10,11 @@ class DeliverymanController {
 
   async show(req, res) {
     const deliveryman = await Deliveryman.findByPk(req.params.id)
+
+    if (!deliveryman) {
+      return res.status(404).json({ error: 'Deliveryman does not exists' })
+    }
+
     return res.json(deliveryman)
   }
 
