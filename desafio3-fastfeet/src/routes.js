@@ -6,6 +6,7 @@ import RecipientController from './app/controllers/RecipientController'
 import DeliverymanController from './app/controllers/DeliverymanController'
 import OrderController from './app/controllers/OrderController'
 import DeliveryController from './app/controllers/DeliveryController'
+import WithdrawalController from './app/controllers/WithdrawalController'
 import HandedOutController from './app/controllers/HandedOutController'
 import FileController from './app/controllers/FileController'
 
@@ -23,7 +24,15 @@ routes.get('/', (req, res) => {
 routes.post('/sessions', SessionController.store)
 
 routes.get('/deliverymen/:deliveryman_id/deliveries', DeliveryController.index)
+routes.put(
+  '/deliverymen/:deliveryman_id/withdrawals/:order_id',
+  WithdrawalController.update
+)
 routes.get('/deliverymen/:deliveryman_id/handedout', HandedOutController.index)
+routes.put(
+  '/deliverymen/:deliveryman_id/handedout/:order_id',
+  HandedOutController.update
+)
 
 routes.use(authMiddleware)
 
