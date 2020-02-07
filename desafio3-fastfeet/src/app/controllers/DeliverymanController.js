@@ -48,6 +48,10 @@ class DeliverymanController {
     const { email } = req.body
     const deliveryman = await Deliveryman.findByPk(req.params.id)
 
+    if (!deliveryman) {
+      return res.status(400).json({ error: 'Deliveryman not found.' })
+    }
+
     if (email && email !== deliveryman.email) {
       const deliverymanExists = await Deliveryman.findOne({ where: { email } })
 
