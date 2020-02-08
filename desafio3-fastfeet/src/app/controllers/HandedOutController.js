@@ -1,5 +1,4 @@
 import { Op } from 'sequelize'
-import * as Yup from 'yup'
 
 import Recipient from '../models/Recipient'
 import Order from '../models/Order'
@@ -36,14 +35,6 @@ class HandedOutController {
   }
 
   async update(req, res) {
-    const schema = Yup.object.shape({
-      end_date: Yup.date().required(),
-    })
-
-    if (!(await schema.isValid(req.body))) {
-      return res.status(400).json({ error: 'Validation fails.' })
-    }
-
     const order = await Order.findOne({
       where: {
         id: req.params.order_id,
@@ -57,7 +48,7 @@ class HandedOutController {
     }
 
     if (!order.end_date) {
-      order.end_date = req.body.end_date
+      order.end_date = new Date()
       order.signature_id = req.body.signature_id
       order.save()
     }
