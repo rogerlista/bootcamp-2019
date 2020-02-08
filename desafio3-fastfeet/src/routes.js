@@ -8,6 +8,8 @@ import OrderController from './app/controllers/OrderController'
 import DeliveryController from './app/controllers/DeliveryController'
 import WithdrawalController from './app/controllers/WithdrawalController'
 import HandedOutController from './app/controllers/HandedOutController'
+import ProblemController from './app/controllers/ProblemController'
+import CancelDeliveryController from './app/controllers/CancelDeliveryController'
 import FileController from './app/controllers/FileController'
 
 import multerConfig from './config/multer'
@@ -28,11 +30,12 @@ routes.put(
   '/deliverymen/:deliveryman_id/withdrawals/:order_id',
   WithdrawalController.update
 )
-routes.get('/deliverymen/:deliveryman_id/handedout', HandedOutController.index)
+routes.get('/deliverymen/:deliveryman_id/handed-out', HandedOutController.index)
 routes.put(
-  '/deliverymen/:deliveryman_id/handedout/:order_id',
+  '/deliverymen/:deliveryman_id/handed-out/:order_id',
   HandedOutController.update
 )
+routes.post('/deliveries/:delivery_id/problems', ProblemController.store)
 
 routes.use(authMiddleware)
 
@@ -53,6 +56,11 @@ routes.get('/orders/:id', OrderController.show)
 routes.post('/orders', OrderController.store)
 routes.put('/orders/:id', OrderController.update)
 routes.delete('/orders/:id', OrderController.delete)
+
+routes.get('/problems', ProblemController.index)
+routes.delete('/problems/:id/cancel-delivery', CancelDeliveryController.delete)
+
+routes.get('/deliveries/:delivery_id/problems', ProblemController.show)
 
 routes.post('/files', upload.single('file'), FileController.store)
 
