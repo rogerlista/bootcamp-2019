@@ -1,30 +1,27 @@
 import { Op } from 'sequelize'
-import * as Yup from 'yup'
-import { startOfDay, endOfDay, parseISO } from 'date-fns'
+import { startOfDay, endOfDay, getHours } from 'date-fns'
 
 import Recipient from '../models/Recipient'
 import Order from '../models/Order'
 
 class WithdrawalController {
   async update(req, res) {
-    const schema = Yup.object().shape({
-      start_date: Yup.date().required(),
-    })
-
-    if (!(await schema.isValid(req.body))) {
-      return res.status(400).json({ error: 'Validation fails.' })
-    }
-
     const { order_id, deliveryman_id } = req.params
-    const { start_date } = req.body
-    const parsedDate = parseISO(start_date)
+    const withdrawalDate = new Date()
+    const withdrawalTime = getHours(withdrawalDate)
+
+    if (withdrawalTime < 8 || withdrawalTime >= 18) {
+      return res
+        .status(400)
+        .json({ error: 'Withdrawals are only allowed from 8am to 6pm.' })
+    }
 
     const totalOrders = await Order.count({
       where: {
         deliveryman_id: deliveryman_id,
         canceled_at: null,
         start_date: {
-          [Op.between]: [startOfDay(parsedDate), endOfDay(parsedDate)],
+          [Op.between]: [startOfDay(withdrawalDate), endOfDay(withdrawalDate)],
         },
       },
     })
@@ -67,7 +64,7 @@ class WithdrawalController {
     }
 
     if (!order.start_date) {
-      order.start_date = parsedDate
+      order.start_date = withdrawalDate
       order.save()
     }
 
