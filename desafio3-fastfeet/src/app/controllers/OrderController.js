@@ -4,7 +4,8 @@ import Recipient from '../models/Recipient'
 import Deliveryman from '../models/Deliveryman'
 import Order from '../models/Order'
 
-import Mail from '../../lib/Mail'
+import Queue from '../../lib/Queue'
+import DeliveryMail from '../jobs/DeliveryMail'
 
 class OrderController {
   async index(req, res) {
@@ -55,17 +56,10 @@ class OrderController {
     const deliveryman = await order.getDeliveryman()
     const recipient = await order.getRecipient()
 
-    await Mail.sendMail({
-      to: `${deliveryman.name} <${deliveryman.email}>`,
-      subject: 'Nova entrega',
-      template: 'delivery',
-      context: {
-        deliveryman: deliveryman.name,
-        recipient: recipient.name,
-        city: recipient.city,
-        state: recipient.state,
-        product: order.product,
-      },
+    await Queue.add(DeliveryMail.key, {
+      deliveryman,
+      recipient,
+      order,
     })
 
     return res.json({
