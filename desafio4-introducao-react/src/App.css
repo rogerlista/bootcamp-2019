@@ -9,3 +9,26 @@ body {
   color: #3e3e3e;
   font-family: Helvetica, Arial, sans-serif;
 }
+
+header {
+  background: #4a90e2;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 42px;
+}
+
+.perfil {
+  display: flex;
+  align-items: center;
+}
+
+.perfil span {
+  font-weight: bold;
+  margin-right: 0.5rem;
+}
+
+.perfil img {
+  width: 24px;
+}
