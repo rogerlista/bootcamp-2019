@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 
+import Post from './Post'
+
 class PostList extends Component {
   state = {
     posts: [
@@ -47,7 +49,7 @@ class PostList extends Component {
   render() {
     return (
       <ul>
-        <li>Post</li>
+        <Post />
       </ul>
     )
   }
