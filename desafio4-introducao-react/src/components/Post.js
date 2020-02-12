@@ -3,12 +3,12 @@ import React from 'react'
 import Comment from './Comment'
 
 function Post({ post }) {
-  const baseUrl = '../assets'
+  const image = 'src/assets/' + post.author.avatar
 
   return (
     <li className="post-item">
       <div className="post-user">
-        <img src={post.author.avatar} className="avatar" />
+        <img src={image} className="avatar" />
 
         <div className="post-dados">
           <p>{post.author.name}</p>

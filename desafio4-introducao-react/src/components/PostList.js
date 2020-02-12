@@ -9,7 +9,7 @@ class PostList extends Component {
         id: 1,
         author: {
           name: 'Julio Alcantara',
-          avatar: 'src/assets/user1.svg',
+          avatar: 'user1.svg',
         },
         date: '04 Jun 2019',
         content: 'Pessoal, alguém save se a Rocketseat está contratando?',
@@ -18,7 +18,7 @@ class PostList extends Component {
             id: 1,
             author: {
               name: 'Diego Fernandes',
-              avatar: 'src/assets/user2.svg',
+              avatar: 'user2.svg',
             },
             content:
               'A Rocketseat está sempre em busca de novos membros para o time, e geralmente ficamos de olho em quem se destaca no Bootcamp, inclusive 80% do nosso time de devs é composto por alunos do Bootcamp. Além disso, se você tem vontade de ensinar gravando vídeos e criando posts, pode me chamar no Discord! (Sério, me chamem mesmo, esse comentário é real)',
@@ -29,7 +29,7 @@ class PostList extends Component {
         id: 2,
         author: {
           name: 'Gabriel Lisboa',
-          avatar: 'src/assets/user3.svg',
+          avatar: 'user3.svg',
         },
         date: '04 Jun 2019',
         content:
@@ -39,7 +39,7 @@ class PostList extends Component {
             id: 1,
             author: {
               name: 'Clara Lisboa',
-              avatar: 'src/assets/user4.svg',
+              avatar: 'user4.svg',
             },
             content:
               'Também estou fazendo o Bootcamp e estou adorando! Estou no terceiro módulo sobre Node e já tenho minha API dos desafios construída!',
@@ -48,7 +48,7 @@ class PostList extends Component {
             id: 2,
             author: {
               name: 'Cézar Toledo',
-              avatar: 'src/assets/user5.svg',
+              avatar: 'user5.svg',
             },
             content:
               'Que maaaaassa! Estou pensando em me inscrever na próxima turma pra ver qual é desse Bootcamp GoStack, dizem que os devs saem de lá com super poderes!',
@@ -59,7 +59,7 @@ class PostList extends Component {
         id: 3,
         author: {
           name: 'Gabriel Lisboa',
-          avatar: 'src/assets/user3.svg',
+          avatar: 'user3.svg',
         },
         date: '04 Jun 2019',
         content:
@@ -69,7 +69,7 @@ class PostList extends Component {
             id: 1,
             author: {
               name: 'Clara Lisboa',
-              avatar: 'src/assets/user4.svg',
+              avatar: 'user4.svg',
             },
             content:
               'Também estou fazendo o Bootcamp e estou adorando! Estou no terceiro módulo sobre Node e já tenho minha API dos desafios construída!',
@@ -78,7 +78,7 @@ class PostList extends Component {
             id: 2,
             author: {
               name: 'Cézar Toledo',
-              avatar: 'src/assets/user5.svg',
+              avatar: 'user5.svg',
             },
             content:
               'Que maaaaassa! Estou pensando em me inscrever na próxima turma pra ver qual é desse Bootcamp GoStack, dizem que os devs saem de lá com super poderes!',
