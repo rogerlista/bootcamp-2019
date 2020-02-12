@@ -2,13 +2,11 @@ import React from 'react'
 
 import Comment from './Comment'
 
-import user1 from '../assets/user1.svg'
-
 function Post({ post }) {
   return (
     <li className="post-item">
       <div className="post-user">
-        <img src={post.author.avatar} />
+        <img src={post.author.avatar} className="avatar" />
 
         <div className="post-dados">
           <p>{post.author.name}</p>
