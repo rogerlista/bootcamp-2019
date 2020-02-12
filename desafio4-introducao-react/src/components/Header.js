@@ -7,7 +7,7 @@ function Header() {
   return (
     <header>
       <img src={logo} alt="Logo Facebook" />
-      <div class="perfil">
+      <div className="perfil">
         <span>Meu perfil</span>
         <img src={avatar} />
       </div>

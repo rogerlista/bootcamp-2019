@@ -4,21 +4,23 @@ import Comment from './Comment'
 
 import user1 from '../assets/user1.svg'
 
-function Post() {
+function Post({ post }) {
   return (
-    <li class="post-item">
-      <div class="post-user">
-        <img src={user1} alt="Usuário 1" />
+    <li className="post-item">
+      <div className="post-user">
+        <img src={post.author.avatar} />
 
-        <div class="post-dados">
-          <p>Júlio Alcantara</p>
-          <small>04 Jun 2019</small>
+        <div className="post-dados">
+          <p>{post.author.name}</p>
+          <small>{post.date}</small>
         </div>
       </div>
 
-      <p>Pessoal, alguém sabe se a Rocketseat está contratando?</p>
+      <p>{post.content}</p>
       <hr />
-      <Comment />
+      {post.comments.map(comment => (
+        <Comment key={comment.id} comment={comment} />
+      ))}
     </li>
   )
 }
