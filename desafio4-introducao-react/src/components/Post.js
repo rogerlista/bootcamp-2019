@@ -3,6 +3,8 @@ import React from 'react'
 import Comment from './Comment'
 
 function Post({ post }) {
+  const baseUrl = '../assets'
+
   return (
     <li className="post-item">
       <div className="post-user">
