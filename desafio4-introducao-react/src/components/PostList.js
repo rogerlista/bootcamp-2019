@@ -48,7 +48,7 @@ class PostList extends Component {
 
   render() {
     return (
-      <ul>
+      <ul class="post">
         <Post />
       </ul>
     )

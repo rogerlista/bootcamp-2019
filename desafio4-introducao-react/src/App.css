@@ -14,6 +14,7 @@ header {
   background: #4a90e2;
   color: #fff;
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   padding: 20px 42px;
@@ -22,6 +23,7 @@ header {
 .perfil {
   display: flex;
   align-items: center;
+  margin-top: 10px;
 }
 
 .perfil span {
@@ -31,4 +33,44 @@ header {
 
 .perfil img {
   width: 24px;
+}
+
+.post {
+  list-style: none;
+  margin: 0 auto;
+  width: 80%;
+}
+
+.post-item {
+  background: #fff;
+  border-radius: 5px;
+  box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0.05); /*#dddddd;*/
+  margin: 20px 0;
+  padding: 20px;
+}
+
+.post-item hr {
+  border: 1px solid #eee;
+  margin: 20px 0;
+}
+
+.post-user {
+  display: flex;
+  align-items: center;
+  padding-bottom: 15px;
+}
+
+.post-user img {
+  margin-right: 10px;
+  width: 42px;
+}
+
+.post-user p {
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1.4;
+}
+
+.post-user small {
+  font-size: 11px;
 }
