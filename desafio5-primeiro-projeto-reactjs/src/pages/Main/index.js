@@ -12,6 +12,7 @@ export default class Main extends Component {
     newRepo: '',
     repositories: [],
     loading: false,
+    error: false,
   }
 
   // carregar os dados do localStorage
@@ -39,25 +40,30 @@ export default class Main extends Component {
   handleSubmit = async event => {
     event.preventDefault()
 
-    this.setState({ loading: true })
+    this.setState({ loading: true, error: false })
 
     const { newRepo, repositories } = this.state
 
-    const response = await api.get(`/repos/${newRepo}`)
+    try {
+      const response = await api.get(`/repos/${newRepo}`)
 
-    const data = {
-      name: response.data.full_name,
+      const data = {
+        name: response.data.full_name,
+      }
+
+      this.setState({
+        repositories: [...repositories, data],
+        newRepo: '',
+        loading: false,
+      })
+    } catch (error) {
+      this.setState({ loading: false, error: true })
+      console.warn('Ops ocorreu um erro', error)
     }
-
-    this.setState({
-      repositories: [...repositories, data],
-      newRepo: '',
-      loading: false,
-    })
   }
 
   render() {
-    const { newRepo, repositories, loading } = this.state
+    const { newRepo, repositories, loading, error } = this.state
 
     return (
       <Container>
@@ -66,7 +72,7 @@ export default class Main extends Component {
           Repositório
         </h1>
 
-        <Form onSubmit={this.handleSubmit}>
+        <Form onSubmit={this.handleSubmit} error={error}>
           <input
             type="text"
             placeholder="Adicionar repositório"
