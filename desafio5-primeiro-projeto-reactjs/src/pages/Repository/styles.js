@@ -11,6 +11,27 @@ export const Loading = styled.div`
   height: 100vh;
 `
 
+export const Filters = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 30px;
+
+  button {
+    background: #7159c1;
+    border: 0;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 12px;
+    margin-right: 5px;
+    padding: 5px;
+    width: 80px;
+
+    &:hover {
+      background: #4e3896;
+    }
+  }
+`
+
 export const Owner = styled.header`
   display: flex;
   flex-direction: column;
