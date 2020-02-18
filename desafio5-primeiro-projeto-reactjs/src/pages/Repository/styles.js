@@ -29,7 +29,6 @@ export const Filters = styled.div`
     &:hover {
       background: #4e3896;
     }
-  }
 `
 
 export const Owner = styled.header`
@@ -121,6 +120,29 @@ export const IssueList = styled.ul`
         font-size: 12px;
         color: #999;
       }
+    }
+  }
+`
+
+export const Pagination = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 30px;
+
+  button {
+    border-radius: 4px;
+    font-size: 11px;
+    margin-left: 5px;
+    padding: 4px;
+    width: 60px;
+
+    &:hover {
+      background: #eee;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.6;
     }
   }
 `

@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import api from '../../services/api'
 
 import Container from '../../components/Container'
-import { Loading, Owner, IssueList, Filters } from './styles'
+import { Loading, Owner, IssueList, Filters, Pagination } from './styles'
 
 export default class Repository extends Component {
   static propTypes = {
@@ -21,18 +21,23 @@ export default class Repository extends Component {
     repository: {},
     issues: [],
     loading: true,
+    page: 1,
+    state: 'open',
+    perPage: 5,
+    disabled: true,
   }
 
   async componentDidMount() {
     const { match } = this.props
+    const { state, perPage } = this.state
     const repoName = decodeURIComponent(match.params.repository)
 
     const [repository, issues] = await Promise.all([
       api.get(`/repos/${repoName}`),
       api.get(`/repos/${repoName}/issues`, {
         params: {
-          state: 'open',
-          per_page: 5,
+          state,
+          per_page: perPage,
         },
       }),
     ])
@@ -46,11 +51,11 @@ export default class Repository extends Component {
   }
 
   getStateIssues = state => {
-    const { repoName } = this.state
+    const { repoName, perPage } = this.state
     return api.get(`/repos/${repoName}/issues`, {
       params: {
         state,
-        per_page: 5,
+        per_page: perPage,
       },
     })
   }
@@ -60,6 +65,7 @@ export default class Repository extends Component {
 
     this.setState({
       issues: issues.data,
+      state: 'open',
     })
   }
 
@@ -68,6 +74,7 @@ export default class Repository extends Component {
 
     this.setState({
       issues: issues.data,
+      state: 'closed',
     })
   }
 
@@ -76,15 +83,36 @@ export default class Repository extends Component {
 
     this.setState({
       issues: issues.data,
+      state: 'all',
+    })
+  }
+
+  paginate = async next => {
+    const { repoName, state, page, perPage } = this.state
+    const pageNumber = next ? page + 1 : page - 1
+
+    const issues = await api.get(`/repos/${repoName}/issues`, {
+      params: {
+        state,
+        per_page: perPage,
+        page: pageNumber,
+      },
+    })
+
+    this.setState({
+      issues: issues.data,
+      page: pageNumber < 1 ? 1 : pageNumber,
+      disabled: pageNumber <= 1,
     })
   }
 
   render() {
-    const { repository, issues, loading } = this.state
+    const { repository, issues, loading, disabled } = this.state
 
     if (loading) {
       return <Loading>Carregando</Loading>
     }
+
     return (
       <Container>
         <Owner>
@@ -120,6 +148,13 @@ export default class Repository extends Component {
             </li>
           ))}
         </IssueList>
+
+        <Pagination>
+          <button disabled={disabled} onClick={() => this.paginate()}>
+            Anterior
+          </button>
+          <button onClick={() => this.paginate('next')}>Próxima</button>
+        </Pagination>
       </Container>
     )
   }
