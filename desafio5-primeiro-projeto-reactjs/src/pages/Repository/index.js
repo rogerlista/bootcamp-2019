@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import api from '../../services/api'
 
 import Container from '../../components/Container'
-import { Loading, Owner, IssueList, Filters, Pagination } from './styles'
+import { Loading, Owner, IssueList, IssueFilter, Pagination } from './styles'
 
 export default class Repository extends Component {
   static propTypes = {
@@ -21,22 +21,28 @@ export default class Repository extends Component {
     repository: {},
     issues: [],
     loading: true,
-    page: 1,
-    state: 'open',
+    currentPage: 1,
     perPage: 5,
     disabled: true,
+    filters: [
+      { state: 'open', label: 'Abertas', active: true, button: 1 },
+      { state: 'closed', label: 'Fechadas', active: false, button: 2 },
+      { state: 'all', label: 'Todas', active: false, button: 3 },
+    ],
   }
 
   async componentDidMount() {
     const { match } = this.props
-    const { state, perPage } = this.state
+    const { filters, perPage, currentPage } = this.state
+
     const repoName = decodeURIComponent(match.params.repository)
 
     const [repository, issues] = await Promise.all([
       api.get(`/repos/${repoName}`),
       api.get(`/repos/${repoName}/issues`, {
         params: {
-          state,
+          state: filters.find(filter => filter.active).state,
+          page: currentPage,
           per_page: perPage,
         },
       }),
@@ -50,64 +56,56 @@ export default class Repository extends Component {
     })
   }
 
-  getStateIssues = state => {
-    const { repoName, perPage } = this.state
-    return api.get(`/repos/${repoName}/issues`, {
-      params: {
-        state,
-        per_page: perPage,
-      },
-    })
-  }
+  loadIssues = async state => {
+    const { repoName, perPage, filters } = this.state
 
-  handleOpen = async () => {
-    const issues = await this.getStateIssues('open')
+    filters.map(filter => (filter.active = filter.state === state))
 
-    this.setState({
-      issues: issues.data,
-      state: 'open',
-    })
-  }
-
-  handleClosed = async () => {
-    const issues = await this.getStateIssues('closed')
-
-    this.setState({
-      issues: issues.data,
-      state: 'closed',
-    })
-  }
-
-  handleAll = async () => {
-    const issues = await this.getStateIssues('all')
-
-    this.setState({
-      issues: issues.data,
-      state: 'all',
-    })
-  }
-
-  paginate = async next => {
-    const { repoName, state, page, perPage } = this.state
-    const pageNumber = next ? page + 1 : page - 1
+    this.setState({ loading: true })
 
     const issues = await api.get(`/repos/${repoName}/issues`, {
       params: {
         state,
+        page: 1,
         per_page: perPage,
-        page: pageNumber,
       },
     })
 
     this.setState({
       issues: issues.data,
-      page: pageNumber < 1 ? 1 : pageNumber,
-      disabled: pageNumber <= 1,
+      currentPage: 1,
+      loading: false,
+      disabled: true,
+    })
+  }
+
+  paginate = async next => {
+    const { repoName, filters, currentPage, perPage } = this.state
+    const pageNumber = next ? currentPage + 1 : currentPage - 1
+    const page = pageNumber < 1 ? 1 : pageNumber
+
+    this.setState({ loading: true })
+
+    const issues = await api.get(`/repos/${repoName}/issues`, {
+      params: {
+        state: filters.find(filter => filter.active).state,
+        page,
+        per_page: perPage,
+      },
+    })
+
+    this.setState({
+      issues: issues.data,
+      currentPage: page,
+      loading: false,
+      disabled: page <= 1,
     })
   }
 
   render() {
-    const { repository, issues, loading, disabled } = this.state
+    const { repository, issues, loading, disabled, filters } = this.state
+    const active = filters.find(filter => filter.active).button
+    console.log('filters', filters, 'disabled', disabled)
 
     if (loading) {
       return <Loading>Carregando</Loading>
@@ -122,11 +120,16 @@ export default class Repository extends Component {
           <p>{repository.description}</p>
         </Owner>
 
-        <Filters>
-          <button onClick={this.handleOpen}>Abertos</button>
-          <button onClick={this.handleClosed}>Fechados</button>
-          <button onClick={this.handleAll}>Todos</button>
-        </Filters>
+        <IssueFilter active={active}>
+          {filters.map(filter => (
+            <button
+              key={filter.state}
+              onClick={() => this.loadIssues(filter.state)}
+            >
+              {filter.label}
+            </button>
+          ))}
+        </IssueFilter>
 
         <IssueList>
           {issues.map(issue => (

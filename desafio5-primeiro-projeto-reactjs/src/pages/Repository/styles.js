@@ -11,7 +11,7 @@ export const Loading = styled.div`
   height: 100vh;
 `
 
-export const Filters = styled.div`
+export const IssueFilter = styled.div`
   display: flex;
   justify-content: flex-end;
   margin-top: 30px;
@@ -27,8 +27,13 @@ export const Filters = styled.div`
     width: 80px;
 
     &:hover {
-      background: #4e3896;
+      background: #5f4ba0;
     }
+
+    &:nth-child(${props => props.active}) {
+      background: #463287;
+    }
+  }
 `
 
 export const Owner = styled.header`
@@ -142,7 +147,7 @@ export const Pagination = styled.div`
 
     &:disabled {
       cursor: not-allowed;
-      opacity: 0.6;
+      opacity: 0.35;
     }
   }
 `
