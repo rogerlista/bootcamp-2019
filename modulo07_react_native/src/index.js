@@ -1,10 +1,12 @@
 import React from 'react'
-import { StyleSheet, View, Text } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
+
+import './config/reactotron'
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text style={styles.welcome}>Hello World</Text>
+      <Text style={styles.welcome}>Welcome to React Native!!!!</Text>
     </View>
   )
 }
