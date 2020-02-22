@@ -1,13 +1,13 @@
-import React from 'react';
-import {StyleSheet, View, Text} from 'react-native';
+import React from 'react'
+import { StyleSheet, View, Text } from 'react-native'
 
-const App: () => React$Node = () => {
+export default function App() {
   return (
     <View style={styles.container}>
-      <Text style={styles.welcome}>Welcome to React Native</Text>
+      <Text style={styles.welcome}>Hello World</Text>
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -22,6 +22,4 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     margin: 10,
   },
-});
-
-export default App;
+})
