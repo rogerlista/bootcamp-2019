@@ -36,15 +36,43 @@ export default class User extends Component {
   state = {
     stars: [],
     loading: true,
+    page: 1,
+    perPage: 20,
+    loadingMore: false,
   }
 
   async componentDidMount() {
+    this.loadRepositories()
+  }
+
+  loadRepositories = async () => {
+    if (this.state.loadingMore) return
+
     const { route } = this.props
     const { user } = route.params
+    const { stars, page, perPage } = this.state
 
-    const response = await api.get(`/users/${user.login}/starred`)
+    this.setState({ loadingMore: true })
 
-    this.setState({ stars: response.data, loading: false })
+    const response = await api.get(`/users/${user.login}/starred`, {
+      params: {
+        page,
+        per_page: perPage,
+      },
+    })
+
+    this.setState({
+      stars: [...stars, ...response.data],
+      loading: false,
+      page: page + 1,
+      loadingMore: false,
+    })
+  }
+
+  renderLoadingMore = () => {
+    if (!this.state.loadingMore) return null
+
+    return <ActivityIndicator color="#7159c1" />
   }
 
   render() {
@@ -71,6 +99,9 @@ export default class User extends Component {
           <Stars
             data={stars}
             keyExtractor={star => String(star.id)}
+            onEndReached={this.loadRepositories}
+            onEndReachedThreshold={0.2}
+            ListFooterComponent={this.renderLoadingMore}
             renderItem={({ item }) => (
               <Starred>
                 <OwnerAvatar source={{ uri: item.owner.avatar_url }} />
