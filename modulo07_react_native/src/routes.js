@@ -16,7 +16,11 @@ const Routes = () => (
     }}
   >
     <Stack.Screen name="Usuários" component={Main} />
-    <Stack.Screen name="User" component={User} />
+    <Stack.Screen
+      name="User"
+      component={User}
+      options={User.navigationOptions}
+    />
   </Stack.Navigator>
 )
 
