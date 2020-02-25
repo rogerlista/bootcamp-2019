@@ -39,6 +39,7 @@ export default class User extends Component {
     page: 1,
     perPage: 20,
     loadingMore: false,
+    refreshing: false,
   }
 
   async componentDidMount() {
@@ -52,7 +53,7 @@ export default class User extends Component {
     const { user } = route.params
     const { stars, page, perPage } = this.state
 
-    this.setState({ loadingMore: true })
+    console.tron.log(this.state)
 
     const response = await api.get(`/users/${user.login}/starred`, {
       params: {
@@ -61,24 +62,46 @@ export default class User extends Component {
       },
     })
 
+    const repo = response.data
+
     this.setState({
-      stars: [...stars, ...response.data],
-      loading: false,
+      stars: page === 1 ? repo : [...stars, ...repo],
       page: page + 1,
+      loading: false,
       loadingMore: false,
+      refreshing: false,
     })
   }
 
-  renderLoadingMore = () => {
-    if (!this.state.loadingMore) return null
+  loadingMore = () => {
+    this.setState({
+      loadingMore: true,
+    })
 
+    this.loadRepositories()
+  }
+
+  renderFooter = () => {
+    if (!this.state.loadingMore) return null
     return <ActivityIndicator color="#7159c1" />
+  }
+
+  refreshList = () => {
+    this.setState(
+      {
+        page: 1,
+        refreshing: true,
+      },
+      () => {
+        this.loadRepositories()
+      }
+    )
   }
 
   render() {
     const { route } = this.props
     const { user } = route.params
-    const { stars, loading } = this.state
+    const { stars, loading, refreshing } = this.state
 
     if (loading) {
       return (
@@ -99,9 +122,11 @@ export default class User extends Component {
           <Stars
             data={stars}
             keyExtractor={star => String(star.id)}
-            onEndReached={this.loadRepositories}
+            onEndReached={this.loadingMore}
             onEndReachedThreshold={0.2}
-            ListFooterComponent={this.renderLoadingMore}
+            ListFooterComponent={this.renderFooter}
+            onRefresh={this.refreshList}
+            refreshing={refreshing}
             renderItem={({ item }) => (
               <Starred>
                 <OwnerAvatar source={{ uri: item.owner.avatar_url }} />
