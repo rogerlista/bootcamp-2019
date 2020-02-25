@@ -3,6 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 
 import Main from './pages/Main'
 import User from './pages/User'
+import Repo from './pages/Repo'
 
 const Stack = createStackNavigator()
 
@@ -21,6 +22,7 @@ const Routes = () => (
       component={User}
       options={User.navigationOptions}
     />
+    <Stack.Screen name="Repo" component={Repo} />
   </Stack.Navigator>
 )
 

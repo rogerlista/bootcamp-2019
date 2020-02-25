@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, ActivityIndicator } from 'react-native'
+import { Text, ActivityIndicator, TouchableOpacity } from 'react-native'
 
 import PropTypes from 'prop-types'
 
@@ -31,6 +31,9 @@ export default class User extends Component {
         user: PropTypes.object,
       }),
     }).isRequired,
+    navigation: PropTypes.shape({
+      navigate: PropTypes.func,
+    }).isRequired,
   }
 
   state = {
@@ -52,8 +55,6 @@ export default class User extends Component {
     const { route } = this.props
     const { user } = route.params
     const { stars, page, perPage } = this.state
-
-    console.tron.log(this.state)
 
     const response = await api.get(`/users/${user.login}/starred`, {
       params: {
@@ -82,8 +83,11 @@ export default class User extends Component {
   }
 
   renderFooter = () => {
-    if (!this.state.loadingMore) return null
-    return <ActivityIndicator color="#7159c1" />
+    if (this.state.loadingMore) {
+      return <ActivityIndicator color="#7159c1" />
+    }
+
+    return null
   }
 
   refreshList = () => {
@@ -96,6 +100,11 @@ export default class User extends Component {
         this.loadRepositories()
       }
     )
+  }
+
+  handleNavigate(repo) {
+    const { navigation } = this.props
+    navigation.navigate('Repo', { repo })
   }
 
   render() {
@@ -129,11 +138,16 @@ export default class User extends Component {
             refreshing={refreshing}
             renderItem={({ item }) => (
               <Starred>
-                <OwnerAvatar source={{ uri: item.owner.avatar_url }} />
-                <Info>
-                  <Title>{item.name}</Title>
-                  <Author>{item.owner.login}</Author>
-                </Info>
+                <OwnerAvatar
+                  key={item.id}
+                  source={{ uri: item.owner.avatar_url }}
+                />
+                <TouchableOpacity onPress={() => this.handleNavigate(item)}>
+                  <Info>
+                    <Title>{item.name}</Title>
+                    <Author>{item.owner.login}</Author>
+                  </Info>
+                </TouchableOpacity>
               </Starred>
             )}
           />
