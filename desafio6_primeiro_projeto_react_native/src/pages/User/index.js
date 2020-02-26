@@ -18,6 +18,7 @@ import {
   Title,
   Author,
   ContainerLoading,
+  Loading,
 } from './styles'
 
 export default class User extends Component {
@@ -84,7 +85,7 @@ export default class User extends Component {
 
   renderFooter = () => {
     if (this.state.loadingMore) {
-      return <ActivityIndicator color="#7159c1" />
+      return <Loading />
     }
 
     return null
@@ -96,13 +97,11 @@ export default class User extends Component {
         page: 1,
         refreshing: true,
       },
-      () => {
-        this.loadRepositories()
-      }
+      this.loadRepositories
     )
   }
 
-  handleNavigate(repo) {
+  handleNavigate = repo => {
     const { navigation } = this.props
     navigation.navigate('Repo', { repo })
   }
