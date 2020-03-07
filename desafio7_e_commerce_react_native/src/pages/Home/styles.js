@@ -11,7 +11,7 @@ export const ProductList = styled.FlatList.attrs({
   showsVerticalScrollIndicator: false,
   horizontal: true,
 })`
-  margin-top: 120px;
+  margin-top: 50px;
 `
 
 export const Product = styled.View`
