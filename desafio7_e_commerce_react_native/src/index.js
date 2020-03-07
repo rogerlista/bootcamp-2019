@@ -2,10 +2,10 @@ import React from 'react'
 import { StatusBar } from 'react-native'
 import { Provider } from 'react-redux'
 
+import './config/reactotron'
+
 import 'react-native-gesture-handler'
 import { NavigationContainer } from '@react-navigation/native'
-
-import './config/reactotron'
 
 import Routes from './routes'
 
