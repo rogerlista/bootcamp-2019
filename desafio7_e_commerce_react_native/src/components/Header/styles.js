@@ -17,3 +17,12 @@ export const IconCart = styled(Icon)`
   color: #fff;
   margin-right: 20px;
 `
+
+export const ItemsCart = styled.Text`
+  font-size: 12px;
+  width: 12px;
+  color: #fff;
+  background: #7159c1;
+  margin-left: 15px;
+  text-align: center;
+`

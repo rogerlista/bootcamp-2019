@@ -1,14 +1,15 @@
-import React, { Component } from 'react'
+import React from 'react'
+import { connect } from 'react-redux'
 import { TouchableOpacity } from 'react-native'
 
-import { HeaderBar, Logo, IconCart } from './styles'
+import { HeaderBar, Logo, IconCart, ItemsCart } from './styles'
 
-const Header = props => {
+const Header = ({ navigation, cartSize }) => {
   return (
     <HeaderBar>
       <TouchableOpacity
         onPress={() => {
-          props.navigation.navigate('Home')
+          navigation.navigate('Home')
         }}
       >
         <Logo source={require('../../assets/images/logo.png')} />
@@ -16,13 +17,16 @@ const Header = props => {
 
       <TouchableOpacity
         onPress={() => {
-          props.navigation.navigate('Cart')
+          navigation.navigate('Cart')
         }}
       >
+        <ItemsCart>{cartSize}</ItemsCart>
         <IconCart name="shopping-basket" />
       </TouchableOpacity>
     </HeaderBar>
   )
 }
 
-export default Header
+export default connect(state => ({
+  cartSize: state.cart.length,
+}))(Header)

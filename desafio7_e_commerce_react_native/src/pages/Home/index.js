@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
 import { formatPrice } from '../../util/format'
@@ -19,7 +20,7 @@ import {
   AddButtonText,
 } from './styles'
 
-export default class Home extends Component {
+class Home extends Component {
   state = {
     products: [],
   }
@@ -32,6 +33,15 @@ export default class Home extends Component {
     }))
 
     this.setState({ products: data })
+  }
+
+  handleAddProduct = product => {
+    const { dispatch } = this.props
+
+    dispatch({
+      type: 'ADD_TO_CART',
+      product,
+    })
   }
 
   render() {
@@ -49,7 +59,7 @@ export default class Home extends Component {
               <Description>{item.title}</Description>
               <Price>{item.priceFormatted}</Price>
 
-              <AddButton onPress={() => {}}>
+              <AddButton onPress={() => this.handleAddProduct(item)}>
                 <IconContainer>
                   <IconButton name="add-shopping-cart" />
                   <IconButtonText>4</IconButtonText>
@@ -63,3 +73,5 @@ export default class Home extends Component {
     )
   }
 }
+
+export default connect()(Home)
