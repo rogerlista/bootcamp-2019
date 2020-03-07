@@ -11,6 +11,7 @@ const Routes = () => (
     screenOptions={{
       headerBackTitleVisible: false,
       headerTransparent: true,
+      headerLeft: null,
     }}
   >
     <Stack.Screen name="Home" component={Home} />

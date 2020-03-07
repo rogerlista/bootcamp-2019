@@ -3,6 +3,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 
 import { formatPrice } from '../../util/format'
 import api from '../../services/api'
+import Header from '../../components/Header'
 
 import {
   Container,
@@ -38,6 +39,7 @@ export default class Home extends Component {
 
     return (
       <Container>
+        <Header navigation={this.props.navigation} />
         <ProductList
           data={products}
           keyExtractor={product => String(product.id)}
