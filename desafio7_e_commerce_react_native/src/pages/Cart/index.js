@@ -19,6 +19,7 @@ import {
   Price,
   ButtonRemove,
   IconDeleteItem,
+  ButtonAction,
   IconButton,
   Footer,
   FooterQtd,
@@ -30,7 +31,15 @@ import {
   ButtonFinishText,
 } from './styles'
 
-const Cart = ({ navigation, cart, removeFromCart }) => {
+const Cart = ({ navigation, cart, removeFromCart, updateAmount }) => {
+  function increment(product) {
+    updateAmount(product.id, product.amount + 1)
+  }
+
+  function decrement(product) {
+    updateAmount(product.id, product.amount - 1)
+  }
+
   return (
     <Container>
       <Header navigation={navigation} />
@@ -53,9 +62,13 @@ const Cart = ({ navigation, cart, removeFromCart }) => {
 
               <Footer>
                 <FooterQtd>
-                  <IconButton name="remove-circle-outline" />
+                  <ButtonAction onPress={() => decrement(item)}>
+                    <IconButton name="remove-circle-outline" />
+                  </ButtonAction>
                   <Qtd value={String(item.amount)} editable={false} />
-                  <IconButton name="add-circle-outline" />
+                  <ButtonAction onPress={() => increment(item)}>
+                    <IconButton name="add-circle-outline" />
+                  </ButtonAction>
                 </FooterQtd>
                 <SubTotal>R$ 539,70</SubTotal>
               </Footer>

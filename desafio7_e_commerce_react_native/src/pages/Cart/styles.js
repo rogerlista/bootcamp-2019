@@ -62,6 +62,8 @@ export const IconDeleteItem = styled(Icon)`
   font-size: 24px;
 `
 
+export const ButtonAction = styled(RectButton)``
+
 export const IconButton = styled(Icon)`
   color: #7159c1;
   font-size: 20px;
