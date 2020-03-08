@@ -7,6 +7,8 @@ import Header from '../../components/Header'
 
 import * as CartActions from '../../store/modules/cart/actions'
 
+import { formatPrice } from '../../util/format'
+
 import {
   Container,
   CartList,
@@ -31,7 +33,7 @@ import {
   ButtonFinishText,
 } from './styles'
 
-const Cart = ({ navigation, cart, removeFromCart, updateAmount }) => {
+const Cart = ({ navigation, cart, total, removeFromCart, updateAmount }) => {
   function increment(product) {
     updateAmount(product.id, product.amount + 1)
   }
@@ -70,14 +72,14 @@ const Cart = ({ navigation, cart, removeFromCart, updateAmount }) => {
                     <IconButton name="add-circle-outline" />
                   </ButtonAction>
                 </FooterQtd>
-                <SubTotal>R$ 539,70</SubTotal>
+                <SubTotal>{item.subtotal}</SubTotal>
               </Footer>
             </Product>
           )}
         ></CartList>
 
         <TotalDescription>Total</TotalDescription>
-        <TotalValue>R$ 1619,10</TotalValue>
+        <TotalValue>{total}</TotalValue>
         <ButtonFinish>
           <ButtonFinishText>Finalizar pedido</ButtonFinishText>
         </ButtonFinish>
@@ -86,7 +88,15 @@ const Cart = ({ navigation, cart, removeFromCart, updateAmount }) => {
   )
 }
 const mapStateToProps = state => ({
-  cart: state.cart,
+  cart: state.cart.map(product => ({
+    ...product,
+    subtotal: formatPrice(product.price * product.amount),
+  })),
+  total: formatPrice(
+    state.cart.reduce((total, product) => {
+      return total + product.price * product.amount
+    }, 0)
+  ),
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators(CartActions, dispatch)
