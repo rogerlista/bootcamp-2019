@@ -50,7 +50,7 @@ const Cart = ({ navigation, cart }) => {
               <Footer>
                 <FooterQtd>
                   <IconButton name="remove-circle-outline" />
-                  <Qtd value="8" editable={false} />
+                  <Qtd value={String(item.amount)} editable={false} />
                   <IconButton name="add-circle-outline" />
                 </FooterQtd>
                 <SubTotal>R$ 539,70</SubTotal>
