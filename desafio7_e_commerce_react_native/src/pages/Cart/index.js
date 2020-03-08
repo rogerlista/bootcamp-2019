@@ -1,7 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
+import { bindActionCreators } from 'redux'
+
 import Header from '../../components/Header'
+
+import * as CartActions from '../../store/modules/cart/actions'
 
 import {
   Container,
@@ -26,7 +30,7 @@ import {
   ButtonFinishText,
 } from './styles'
 
-const Cart = ({ navigation, cart, dispatch }) => {
+const Cart = ({ navigation, cart, removeFromCart }) => {
   return (
     <Container>
       <Header navigation={navigation} />
@@ -42,14 +46,7 @@ const Cart = ({ navigation, cart, dispatch }) => {
                   <Description>{item.title}</Description>
                   <Price>{item.priceFormatted}</Price>
                 </Item>
-                <ButtonRemove
-                  onPress={() =>
-                    dispatch({
-                      type: 'REMOVE_FROM_CART',
-                      id: item.id,
-                    })
-                  }
-                >
+                <ButtonRemove onPress={() => removeFromCart(item.id)}>
                   <IconDeleteItem name="delete-forever" />
                 </ButtonRemove>
               </Detail>
@@ -79,4 +76,6 @@ const mapStateToProps = state => ({
   cart: state.cart,
 })
 
-export default connect(mapStateToProps)(Cart)
+const mapDispatchToProps = dispatch => bindActionCreators(CartActions, dispatch)
+
+export default connect(mapStateToProps, mapDispatchToProps)(Cart)
