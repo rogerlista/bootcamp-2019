@@ -26,7 +26,7 @@ import {
   ButtonFinishText,
 } from './styles'
 
-const Cart = ({ navigation, cart }) => {
+const Cart = ({ navigation, cart, dispatch }) => {
   return (
     <Container>
       <Header navigation={navigation} />
@@ -42,7 +42,14 @@ const Cart = ({ navigation, cart }) => {
                   <Description>{item.title}</Description>
                   <Price>{item.priceFormatted}</Price>
                 </Item>
-                <ButtonRemove>
+                <ButtonRemove
+                  onPress={() =>
+                    dispatch({
+                      type: 'REMOVE_FROM_CART',
+                      id: item.id,
+                    })
+                  }
+                >
                   <IconDeleteItem name="delete-forever" />
                 </ButtonRemove>
               </Detail>
