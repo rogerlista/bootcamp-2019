@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import Icon from 'react-native-vector-icons/MaterialIcons'
 
 import { formatPrice } from '../../util/format'
 import api from '../../services/api'
