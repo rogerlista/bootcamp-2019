@@ -7,7 +7,7 @@ export const HeaderBar = styled.View`
   justify-content: space-between;
   align-items: center;
   flex-direction: row;
-  padding: 80px 20px 0;
+  padding: 80px 20px 0px;
 `
 
 export const Logo = styled.Image``

@@ -3,8 +3,6 @@ import { connect } from 'react-redux'
 
 import { bindActionCreators } from 'redux'
 
-import Header from '../../components/Header'
-
 import * as CartActions from '../../store/modules/cart/actions'
 
 import { formatPrice } from '../../util/format'
@@ -33,13 +31,7 @@ import {
   ButtonFinishText,
 } from './styles'
 
-const Cart = ({
-  navigation,
-  cart,
-  total,
-  removeFromCart,
-  updateAmountRequest,
-}) => {
+const Cart = ({ cart, total, removeFromCart, updateAmountRequest }) => {
   function increment(product) {
     updateAmountRequest(product.id, product.amount + 1)
   }
@@ -50,7 +42,6 @@ const Cart = ({
 
   return (
     <Container>
-      <Header navigation={navigation} />
       <CartDetail>
         <CartList
           data={cart}

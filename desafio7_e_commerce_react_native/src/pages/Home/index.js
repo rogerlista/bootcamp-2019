@@ -5,7 +5,6 @@ import { bindActionCreators } from 'redux'
 
 import { formatPrice } from '../../util/format'
 import api from '../../services/api'
-import Header from '../../components/Header'
 
 import * as CartActions from '../../store/modules/cart/actions'
 
@@ -50,7 +49,6 @@ class Home extends Component {
 
     return (
       <Container>
-        <Header navigation={this.props.navigation} />
         <ProductList
           data={products}
           keyExtractor={product => String(product.id)}
