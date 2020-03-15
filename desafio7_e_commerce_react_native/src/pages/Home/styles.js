@@ -1,4 +1,5 @@
 import styled from 'styled-components/native'
+import { darken } from 'polished'
 import { RectButton } from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
@@ -56,7 +57,7 @@ export const AddButton = styled(RectButton)`
 `
 
 export const IconContainer = styled.View`
-  background: rgba(0, 0, 0, 0.1);
+  background: ${darken(0.03, '#7159c1')};
   flex-direction: row;
   justify-content: center;
   align-items: center;
