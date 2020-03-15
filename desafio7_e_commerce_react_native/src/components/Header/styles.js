@@ -19,10 +19,17 @@ export const IconCart = styled(Icon)`
 `
 
 export const ItemsCart = styled.Text`
+  position: absolute;
+  top: -9px;
+  min-width: 18px;
+  min-height: 18px;
   font-size: 12px;
   width: 12px;
   color: #fff;
   background: #7159c1;
   margin-left: 15px;
   text-align: center;
+  padding: 2px;
+  border-radius: 9px;
+  overflow: hidden;
 `
