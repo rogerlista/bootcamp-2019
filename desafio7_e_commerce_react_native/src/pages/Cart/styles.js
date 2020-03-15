@@ -9,6 +9,7 @@ export const Container = styled.View`
 `
 
 export const CartDetail = styled.View`
+  flex: 1;
   background: #fff;
   border-radius: 4px;
   margin: 50px 20px;
@@ -128,4 +129,17 @@ export const ButtonFinishText = styled.Text`
   font-weight: bold;
   text-align: center;
   text-transform: uppercase;
+`
+
+export const EmptyContainer = styled.View`
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+`
+
+export const EmptyText = styled.Text`
+  color: #fff;
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: 18px;
 `

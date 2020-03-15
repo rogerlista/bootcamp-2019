@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux'
 
 import * as CartActions from '../../store/modules/cart/actions'
 
+import Icon from 'react-native-vector-icons/MaterialIcons'
 import { formatPrice } from '../../util/format'
 
 import {
@@ -29,6 +30,8 @@ import {
   TotalValue,
   ButtonFinish,
   ButtonFinishText,
+  EmptyContainer,
+  EmptyText,
 } from './styles'
 
 const Cart = ({ cart, total, removeFromCart, updateAmountRequest }) => {
@@ -42,45 +45,52 @@ const Cart = ({ cart, total, removeFromCart, updateAmountRequest }) => {
 
   return (
     <Container>
-      <CartDetail>
-        <CartList
-          data={cart}
-          keyExtractor={product => String(product.id)}
-          renderItem={({ item }) => (
-            <Product>
-              <Detail>
-                <Imagem source={{ uri: item.image }} />
-                <Item>
-                  <Description>{item.title}</Description>
-                  <Price>{item.priceFormatted}</Price>
-                </Item>
-                <ButtonRemove onPress={() => removeFromCart(item.id)}>
-                  <IconDeleteItem name="delete-forever" />
-                </ButtonRemove>
-              </Detail>
+      {cart.length ? (
+        <CartDetail>
+          <CartList
+            data={cart}
+            keyExtractor={product => String(product.id)}
+            renderItem={({ item }) => (
+              <Product>
+                <Detail>
+                  <Imagem source={{ uri: item.image }} />
+                  <Item>
+                    <Description>{item.title}</Description>
+                    <Price>{item.priceFormatted}</Price>
+                  </Item>
+                  <ButtonRemove onPress={() => removeFromCart(item.id)}>
+                    <IconDeleteItem name="delete-forever" />
+                  </ButtonRemove>
+                </Detail>
 
-              <Footer>
-                <FooterQtd>
-                  <ButtonAction onPress={() => decrement(item)}>
-                    <IconButton name="remove-circle-outline" />
-                  </ButtonAction>
-                  <Qtd value={String(item.amount)} editable={false} />
-                  <ButtonAction onPress={() => increment(item)}>
-                    <IconButton name="add-circle-outline" />
-                  </ButtonAction>
-                </FooterQtd>
-                <SubTotal>{item.subtotal}</SubTotal>
-              </Footer>
-            </Product>
-          )}
-        ></CartList>
+                <Footer>
+                  <FooterQtd>
+                    <ButtonAction onPress={() => decrement(item)}>
+                      <IconButton name="remove-circle-outline" />
+                    </ButtonAction>
+                    <Qtd value={String(item.amount)} editable={false} />
+                    <ButtonAction onPress={() => increment(item)}>
+                      <IconButton name="add-circle-outline" />
+                    </ButtonAction>
+                  </FooterQtd>
+                  <SubTotal>{item.subtotal}</SubTotal>
+                </Footer>
+              </Product>
+            )}
+          ></CartList>
 
-        <TotalDescription>Total</TotalDescription>
-        <TotalValue>{total}</TotalValue>
-        <ButtonFinish>
-          <ButtonFinishText>Finalizar pedido</ButtonFinishText>
-        </ButtonFinish>
-      </CartDetail>
+          <TotalDescription>Total</TotalDescription>
+          <TotalValue>{total}</TotalValue>
+          <ButtonFinish>
+            <ButtonFinishText>Finalizar pedido</ButtonFinishText>
+          </ButtonFinish>
+        </CartDetail>
+      ) : (
+        <EmptyContainer>
+          <Icon name="remove-shopping-cart" size={64} color="#eee" />
+          <EmptyText>Seu carrinho está vazio.</EmptyText>
+        </EmptyContainer>
+      )}
     </Container>
   )
 }
