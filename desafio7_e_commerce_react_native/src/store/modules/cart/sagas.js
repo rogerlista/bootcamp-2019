@@ -1,3 +1,4 @@
+import { Alert } from 'react-native'
 import { call, select, put, all, takeLatest } from 'redux-saga/effects'
 
 import api from '../../../services/api'
@@ -17,7 +18,8 @@ function* addToCart({ id }) {
   const amount = currentAmount + 1
 
   if (amount > stockAmount) {
-    console.tron.warn('ERRO - Produto com estoque insuficiente.')
+    // console.tron.warn('ERRO - Produto com estoque insuficiente.')
+    Alert.alert('Produto com estoque insuficiente.')
     return
   }
 
@@ -45,7 +47,8 @@ function* updateAmount({ id, amount }) {
   const stockAmount = stock.data.amount
 
   if (amount > stockAmount) {
-    console.tron.warn('ERRO - Produto com quantidade em estoque insuficiente.')
+    // console.tron.warn('ERRO - Produto com quantidade em estoque insuficiente.')
+    Alert.alert('Produto com quantidade em estoque insuficiente.')
     return
   }
 
