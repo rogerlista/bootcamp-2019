@@ -1,6 +1,6 @@
 import styled from 'styled-components/native'
 
-import { RectButton } from 'react-native-gesture-handler'
+// import { RectButton } from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
 export const Container = styled.View`
@@ -56,14 +56,14 @@ export const Price = styled.Text`
   margin-top: 8px;
 `
 
-export const ButtonRemove = styled(RectButton)``
+export const ButtonRemove = styled.TouchableOpacity``
 
 export const IconDeleteItem = styled(Icon)`
   color: #7159c1;
   font-size: 24px;
 `
 
-export const ButtonAction = styled(RectButton)``
+export const ButtonAction = styled.TouchableOpacity``
 
 export const IconButton = styled(Icon)`
   color: #7159c1;
@@ -116,7 +116,7 @@ export const TotalValue = styled.Text`
   text-align: center;
 `
 
-export const ButtonFinish = styled(RectButton)`
+export const ButtonFinish = styled.TouchableOpacity`
   border-radius: 4px;
   background: #7159c1;
   margin: 30px 0 10px;
