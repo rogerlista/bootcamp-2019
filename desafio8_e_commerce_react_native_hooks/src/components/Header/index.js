@@ -1,10 +1,12 @@
 import React from 'react'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { TouchableOpacity } from 'react-native'
 
 import { HeaderBar, Logo, IconCart, ItemsCart } from './styles'
 
-const Header = ({ navigation, cartSize }) => {
+export default function Header({ navigation }) {
+  const cartSize = useSelector(state => state.cart.length)
+
   return (
     <HeaderBar>
       <TouchableOpacity
@@ -26,7 +28,3 @@ const Header = ({ navigation, cartSize }) => {
     </HeaderBar>
   )
 }
-
-export default connect(state => ({
-  cartSize: state.cart.length,
-}))(Header)
