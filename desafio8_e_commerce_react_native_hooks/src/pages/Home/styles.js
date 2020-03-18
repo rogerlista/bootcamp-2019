@@ -1,6 +1,6 @@
 import styled from 'styled-components/native'
 import { darken } from 'polished'
-import { RectButton } from 'react-native-gesture-handler'
+// import { RectButton } from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
 export const Container = styled.View`
@@ -44,7 +44,7 @@ export const Price = styled.Text`
   margin-top: 10px;
 `
 
-export const AddButton = styled(RectButton)`
+export const AddButton = styled.TouchableOpacity`
   background: #7159c1;
   border: 0;
   border-radius: 4px;

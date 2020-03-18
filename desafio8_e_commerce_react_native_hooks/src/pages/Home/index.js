@@ -75,11 +75,3 @@ export default function Home() {
     </Container>
   )
 }
-
-const mapStateToProps = state => ({
-  amount: state.cart.reduce((amount, product) => {
-    amount[product.id] = product.amount
-
-    return amount
-  }, {}),
-})
