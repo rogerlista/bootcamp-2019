@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
 import { bindActionCreators } from 'redux'
@@ -22,55 +22,50 @@ import {
   AddButtonText,
 } from './styles'
 
-class Home extends Component {
-  state = {
-    products: [],
-  }
+function Home({ amount, addToCartRequest }) {
+  const [products, setProducts] = useState([])
 
-  async componentDidMount() {
-    const response = await api.get('/products')
-    const data = response.data.map(product => ({
-      ...product,
-      priceFormatted: formatPrice(product.price),
-    }))
+  useEffect(() => {
+    async function loadProducts() {
+      const response = await api.get('/products')
+      const data = response.data.map(product => ({
+        ...product,
+        priceFormatted: formatPrice(product.price),
+      }))
 
-    this.setState({ products: data })
-  }
+      setProducts(data)
+    }
 
-  handleAddProduct = id => {
-    const { addToCartRequest } = this.props
+    loadProducts()
+  }, [])
 
+  function handleAddProduct(id) {
     addToCartRequest(id)
   }
 
-  render() {
-    const { products } = this.state
-    const { amount } = this.props
+  return (
+    <Container>
+      <ProductList
+        data={products}
+        keyExtractor={product => String(product.id)}
+        renderItem={({ item }) => (
+          <Product>
+            <Imagem source={{ uri: item.image }} />
+            <Description>{item.title}</Description>
+            <Price>{item.priceFormatted}</Price>
 
-    return (
-      <Container>
-        <ProductList
-          data={products}
-          keyExtractor={product => String(product.id)}
-          renderItem={({ item }) => (
-            <Product>
-              <Imagem source={{ uri: item.image }} />
-              <Description>{item.title}</Description>
-              <Price>{item.priceFormatted}</Price>
-
-              <AddButton onPress={() => this.handleAddProduct(item.id)}>
-                <IconContainer>
-                  <IconButton name="add-shopping-cart" />
-                  <IconButtonText>{amount[item.id] || 0}</IconButtonText>
-                </IconContainer>
-                <AddButtonText>Adicionar</AddButtonText>
-              </AddButton>
-            </Product>
-          )}
-        />
-      </Container>
-    )
-  }
+            <AddButton onPress={() => handleAddProduct(item.id)}>
+              <IconContainer>
+                <IconButton name="add-shopping-cart" />
+                <IconButtonText>{amount[item.id] || 0}</IconButtonText>
+              </IconContainer>
+              <AddButtonText>Adicionar</AddButtonText>
+            </AddButton>
+          </Product>
+        )}
+      />
+    </Container>
+  )
 }
 
 const mapStateToProps = state => ({
