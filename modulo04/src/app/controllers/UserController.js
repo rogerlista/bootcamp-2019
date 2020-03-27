@@ -63,10 +63,10 @@ class UserController {
       if (userExists) {
         return res.status(400).json({ error: 'User already exists.' })
       }
+    }
 
-      if (oldPassword && !(await user.checkPassword(oldPassword))) {
-        return res.status(401).json({ error: 'Password does not match.' })
-      }
+    if (oldPassword && !(await user.checkPassword(oldPassword))) {
+      return res.status(401).json({ error: 'Password does not match.' })
     }
 
     await user.update(req.body)
@@ -85,7 +85,7 @@ class UserController {
       id,
       name,
       email,
-      provider,
+      avatar,
     })
   }
 }
