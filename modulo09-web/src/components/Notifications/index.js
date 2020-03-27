@@ -35,7 +35,7 @@ export default function Notifications() {
     }
 
     loadNotifications()
-  })
+  }, [])
 
   function handleToggleVisible() {
     setVisible(!visible)
