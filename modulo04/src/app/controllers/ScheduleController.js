@@ -1,4 +1,15 @@
-import { startOfDay, endOfDay, parseISO } from 'date-fns'
+import {
+  startOfDay,
+  endOfDay,
+  parseISO,
+  setHours,
+  setMinutes,
+  setSeconds,
+  isBefore,
+  isEqual,
+  parseISO,
+} from 'date-fns'
+import { utcToZonedTime } from 'date-fns-tz'
 import { Op } from 'sequelize'
 
 import User from '../models/User'
@@ -6,6 +17,8 @@ import Appointment from '../models/Appointment'
 
 class ScheduleController {
   async index(req, res) {
+    const hours = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+
     const checkUserProvider = await User.findOne({
       where: { id: req.userId, provider: true },
     })
@@ -35,7 +48,21 @@ class ScheduleController {
       order: ['date'],
     })
 
-    return res.json(schedules)
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
+    const datas = hours.map(hour => {
+      const checkDate = setSeconds(setMinutes(setHours(parsedDate, hour), 0), 0)
+      const compareDate = utcToZonedTime(checkDate, timezone)
+
+      return {
+        time: `${hour}:00h`,
+        past: isBefore(compareDate, parsedDate),
+        appointment: schedules.find(appointment =>
+          isEqual(parseISO(appointment.date), compareDate)
+        ),
+      }
+    })
+
+    return res.json(datas)
   }
 }
 
