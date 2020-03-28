@@ -5,9 +5,9 @@ import {
   setHours,
   setMinutes,
   setSeconds,
+  setMilliseconds,
   isBefore,
   isEqual,
-  parseISO,
 } from 'date-fns'
 import { utcToZonedTime } from 'date-fns-tz'
 import { Op } from 'sequelize'
@@ -50,14 +50,17 @@ class ScheduleController {
 
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
     const datas = hours.map(hour => {
-      const checkDate = setSeconds(setMinutes(setHours(parsedDate, hour), 0), 0)
+      const checkDate = setMilliseconds(
+        setSeconds(setMinutes(setHours(parsedDate, hour), 0), 0),
+        0
+      )
       const compareDate = utcToZonedTime(checkDate, timezone)
 
       return {
         time: `${hour}:00h`,
-        past: isBefore(compareDate, parsedDate),
+        past: isBefore(compareDate, new Date()),
         appointment: schedules.find(appointment =>
-          isEqual(parseISO(appointment.date), compareDate)
+          isEqual(appointment.date, compareDate)
         ),
       }
     })
