@@ -5,6 +5,8 @@ import Order from '../models/Order'
 
 class HandedOutController {
   async index(req, res) {
+    const { page = 1 } = req.query
+
     const handedOut = await Order.findAll({
       where: {
         end_date: {
@@ -12,6 +14,8 @@ class HandedOutController {
         },
       },
       attributes: ['id', 'product', 'start_date', 'end_date'],
+      limit: 20,
+      offset: (page - 1) * 20,
       order: ['end_date'],
       include: [
         {
