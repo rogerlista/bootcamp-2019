@@ -4,13 +4,14 @@ import * as Yup from 'yup'
 import Recipient from '../models/Recipient'
 import Deliveryman from '../models/Deliveryman'
 import Order from '../models/Order'
+import DeliveryProblem from '../models/DeliveryProblem'
 
 import Queue from '../../lib/Queue'
 import DeliveryMail from '../jobs/DeliveryMail'
 
 class OrderController {
   async index(req, res) {
-    const { page = 1, product } = req.query
+    const { page = 1, product, problems = false } = req.query
     const condition = product
       ? { product: { [Op.iLike]: `%${product}%` } }
       : null
@@ -30,6 +31,12 @@ class OrderController {
           model: Deliveryman,
           as: 'deliveryman',
           attributes: ['id', 'name', 'email'],
+        },
+        {
+          model: DeliveryProblem,
+          required: problems,
+          as: 'deliveryProblem',
+          attributes: ['id', 'description'],
         },
       ],
     })
