@@ -1,12 +1,12 @@
 import React from 'react'
 import { BrowserRouter, Switch } from 'react-router-dom'
 
-import SignIn from '../pages/SignIn'
+import SignIn from '~/pages/SignIn'
 
-import OrderList from '../pages/OrderList'
-import DeliveryList from '../pages/DeliveryList'
-import RecipientList from '../pages/RecipientList'
-import ProblemList from '../pages/ProblemList'
+import OrderList from '~/pages/OrderList'
+import DeliveryList from '~/pages/DeliveryList'
+import RecipientList from '~/pages/RecipientList'
+import ProblemList from '~/pages/ProblemList'
 
 import Route from './Route'
 
