@@ -17,8 +17,16 @@ export default createGlobalStyle`
   }
 
   body{
+    color: #444;
     font: 400 14px 'Roboto', sans-serif;
     -webkit-font-smoothing: antialiased;
+  }
+
+  label {
+    display: inline-block;
+    font-weight: bold;
+    margin-bottom: 9px;
+    text-transform: uppercase;
   }
 
   input {
@@ -27,6 +35,7 @@ export default createGlobalStyle`
     color: #999;
     font: 400 16px 'Roboto', sans-serif;
     height: 45px;
+    margin-bottom: 15px;
     padding: 0 15px;
     width: 100%;
   }
@@ -46,6 +55,7 @@ export default createGlobalStyle`
   .button {
     background: #7d40e7;
     border-radius: 4px;
+    color: #fff;
     display: inline-block;
     font: 700 14px 'Roboto', sans-serif;
     height: 36px;
