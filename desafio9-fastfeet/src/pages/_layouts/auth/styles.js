@@ -23,6 +23,14 @@ export const Content = styled.div`
     width: 260px;
   }
 
+  span {
+    align-self: flex-start;
+    display: block;
+    color: #fb6f91;
+    font-weight: bold;
+    margin: -10px 0 10px;
+  }
+
   button {
     font-size: 16px;
     height: 45px;

@@ -1,8 +1,17 @@
 import React from 'react'
 
+import * as Yup from 'yup'
 import { Form, Input } from '@rocketseat/unform'
 
 import logo from '~/assets/fastfeet-logo.png'
+
+const schema = Yup.object().shape({
+  email: Yup.string()
+    .email('Insira um e-mail válido')
+    .required('O e-mail é obrigatório'),
+
+  password: Yup.string().required('A senha é obrigatória'),
+})
 
 export default function SignIn() {
   function handleSubmit(data) {
@@ -13,7 +22,7 @@ export default function SignIn() {
     <>
       <img src={logo} alt="Logo FastFeet" />
 
-      <Form onSubmit={handleSubmit}>
+      <Form schema={schema} onSubmit={handleSubmit}>
         <label htmlFor="email">Seu e-mail</label>
         <Input name="email" type="email" placeholder="examplo@email.com" />
         <label htmlFor="password">Sua senha</label>
