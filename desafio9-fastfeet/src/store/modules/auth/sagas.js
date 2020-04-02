@@ -3,7 +3,7 @@ import { takeLatest, call, put, all } from 'redux-saga/effects'
 import history from '~/services/history'
 import api from '~/services/api'
 
-import { signInSuccess } from './actions'
+import { signInSuccess, signInFailure } from './actions'
 
 export function* signIn({ payload }) {
   const { email, password } = payload
@@ -20,7 +20,7 @@ export function* signIn({ payload }) {
 
     history.push('/order-list')
   } catch (err) {
-    console.tron.error(err)
+    yield put(signInFailure())
   }
 }
 
