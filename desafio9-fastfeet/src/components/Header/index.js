@@ -1,8 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-
 import logo from '~/assets/fastfeet-logo.png'
-
 import { Container, Profile } from './styles'
 
 export default function Header() {
